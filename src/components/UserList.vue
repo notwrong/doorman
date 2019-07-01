@@ -11,7 +11,7 @@
           <v-flex xs6 class="mr-2 text-xs-right">
             <v-icon large v-if="isAllowed(user)" right class="success--text">check</v-icon>
             <v-icon large v-if="isBlocked(user)" right class="error--text">block</v-icon>
-            <PopUp @editPermission="val => read(val)" v-bind:selected-user="user">
+            <PopUp :selected-user="user">
               <v-btn class="primary">Edit</v-btn>
             </PopUp>
           </v-flex>
@@ -32,7 +32,7 @@ export default {
   },
   data() {
     return {
-      currentUser: {
+      dummyUser: {
         username: "DaftBeowulf",
         creds: { token: "token" },
         allow: {
@@ -80,28 +80,47 @@ export default {
           score: 136.3673
         },
         {
-          username: "TomHessburg",
+          login: "TomHessburg",
+          id: 44884308,
+          node_id: "MDQ6VXNlcjQ0ODg0MzA4",
+          avatar_url: "https://avatars3.githubusercontent.com/u/44884308?v=4",
+          gravatar_id: "",
+          url: "https://api.github.com/users/TomHessburg",
+          html_url: "https://github.com/TomHessburg",
+          followers_url: "https://api.github.com/users/TomHessburg/followers",
+          following_url:
+            "https://api.github.com/users/TomHessburg/following{/other_user}",
+          gists_url: "https://api.github.com/users/TomHessburg/gists{/gist_id}",
+          starred_url:
+            "https://api.github.com/users/TomHessburg/starred{/owner}{/repo}",
+          subscriptions_url:
+            "https://api.github.com/users/TomHessburg/subscriptions",
+          organizations_url: "https://api.github.com/users/TomHessburg/orgs",
+          repos_url: "https://api.github.com/users/TomHessburg/repos",
+          events_url:
+            "https://api.github.com/users/TomHessburg/events{/privacy}",
+          received_events_url:
+            "https://api.github.com/users/TomHessburg/received_events",
+          type: "User",
+          site_admin: false,
+          score: 83.04401
+        },
+        {
+          login: "GannonDetroit",
           creds: { token: "token" },
           allow: {},
           block: {},
           user_id: "FK_TO_FIREBASE_USER_AUTH_COLLECTION"
         },
         {
-          username: "GannonDetroit",
+          login: "ajb85",
           creds: { token: "token" },
           allow: {},
           block: {},
           user_id: "FK_TO_FIREBASE_USER_AUTH_COLLECTION"
         },
         {
-          username: "ajb85",
-          creds: { token: "token" },
-          allow: {},
-          block: {},
-          user_id: "FK_TO_FIREBASE_USER_AUTH_COLLECTION"
-        },
-        {
-          username: "ryanboris",
+          login: "ryanboris",
           creds: { token: "token" },
           allow: {},
           block: {},
@@ -115,18 +134,17 @@ export default {
       login: "githubLogin"
     }),
     isAllowed(user) {
-      const allowed = Object.values(this.currentUser.allow);
-      return Boolean(allowed.find(u => u.username === user.username));
+      return Boolean(this.currentUser.allow && this.currentUser.allow[user.id]);
     },
     isBlocked(user) {
-      const blocked = Object.values(this.currentUser.block);
-      return Boolean(blocked.find(u => u.username === user.username));
-    },
-    read(val) {
-      console.log(val);
+      return Boolean(this.currentUser.block && this.currentUser.block[user.id]);
     }
   },
-  computed: {}
+  computed: {
+    currentUser() {
+      return this.$store.state.currentUser;
+    }
+  }
 };
 </script>
 

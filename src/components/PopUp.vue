@@ -3,17 +3,23 @@
     <slot slot="activator"></slot>
     <v-card>
       <v-card-title>
-        <h2>Current User: {{currentUser}}</h2>
+        <h2>Current User: {{currentUser.login}}</h2>
         <br />
-        <h2>Edit {{selectedUser}}</h2>
+        <h2>Edit {{selectedUser.login}}</h2>
       </v-card-title>
       <v-card-text>This user is currently either blocked/allowed/neither. Edit permissions?</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <!-- <v-btn flat class="success" @click="emitPermission('block')">Yes, block this user</v-btn> -->
-        <v-btn flat class="success" @click="addBlocked(selectedUser)">Yes, block this user</v-btn>
-
-        <v-btn flat class="success" @click="addAllowed(selectedUser)">Yes, whitelist this user</v-btn>
+        <v-btn
+          flat
+          class="success"
+          @click="addBlocked(selectedUser), dialog=false"
+        >Yes, block this user</v-btn>
+        <v-btn
+          flat
+          class="success"
+          @click="addAllowed(selectedUser), dialog=false"
+        >Yes, whitelist this user</v-btn>
         <v-btn flat class="error" @click="dialog=false">Cancel</v-btn>
       </v-card-actions>
     </v-card>
@@ -32,10 +38,6 @@ export default {
   },
   methods: {
     ...mapActions({ addBlocked: "addBlocked", addAllowed: "addAllowed" })
-    // emitPermission(val) {
-    //   this.$emit("editPermission", val);
-    //   this.dialog = false;
-    // }
   },
   computed: {
     currentUser() {

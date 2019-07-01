@@ -62,11 +62,13 @@ export default new Vuex.Store({
     },
     addBlocked({ commit, state }, user) {
       let updatedUser = state.currentUser;
-      console.log("user", user, "updatedUser", updatedUser);
 
+      // first conditional prevents error from devs if they'd signed in before the block/allow objects were added to the default state object
+      // will be removed for production
       if (updatedUser.allow && updatedUser.allow[user.id])
         delete updatedUser.allow[user.id];
       updatedUser.block[user.id] = user;
+
       db.collection("users")
         .doc(`${state.currentUser.id}`)
         .update(updatedUser)
@@ -78,9 +80,10 @@ export default new Vuex.Store({
     addAllowed({ commit, state }, user) {
       let updatedUser = state.currentUser;
 
-      updatedUser.block[user.id] && delete updatedUser.block[user.id];
-      delete updatedUser.block["user"];
+      if (updatedUser.block && updatedUser.block[user.id])
+        delete updatedUser.block[user.id];
       updatedUser.allow[user.id] = user;
+
       db.collection("users")
         .doc(`${state.currentUser.id}`)
         .update(updatedUser)
