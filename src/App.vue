@@ -12,28 +12,23 @@
     </v-toolbar>
 
     <v-content>
-
-      <Home />
+      <Home/>
     </v-content>
   </v-app>
 </template>
 
 <script>
-
 import Home from "./views/Home.vue";
-import firebase from 'firebase';
-
+import firebase from "firebase";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     Home
   },
   data() {
     return {};
   },
-  methods: {
-
-  }
+  methods: {}
 };
 </script>
