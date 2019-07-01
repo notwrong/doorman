@@ -1,7 +1,7 @@
 <template>
   <v-container app>
     <!-- this v-card is the background card for all payment options -->
-    <v-card depressed height="100%" class="pa-3 my-3 grey darken-4">
+    <v-card depressed class="pa-3 my-3 grey darken-4">
       <!-- v-layout is the grid ability to space out the payment plans -->
       <v-layout row wrap justify-space-around>
         <!-- this v-flex wraps the payment card -->
@@ -56,14 +56,14 @@ export default {
         planName: "START-UP",
         img:
           "https://www.aislelabs.com/wp-content/themes/aislelabs3/images/team.png",
-        description: "Plan for teams of 10 or less",
+        description: "Plan for teams under 10",
         cost: "$1.50"
       },
       {
         planName: "ENTERPRISE",
         img:
           "https://www.geekdentalmarketing.com/wp-content/uploads/2018/09/team.png",
-        description: "Plan for teams greater than 10",
+        description: "Plan for teams above 10",
         cost: "$1"
       }
     ]
@@ -85,16 +85,19 @@ export default {
 .title {
   text-align: center;
   margin-bottom: 10%;
-
-  /* @media (min-width: 1260px) {
-    font-size: 2px;
-  } */
 }
 
-#theButton {
-  /* @media (mix-width: 960px) {
-    width: 80%;
-  } */
+.v-btn {
+  width: 90%;
+  height: 45px;
+}
+
+.v-card__actions {
+  justify-content: center;
+}
+
+.upperCard {
+  margin-bottom: 4%;
 }
 </style>
 
