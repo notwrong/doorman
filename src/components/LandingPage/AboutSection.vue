@@ -1,19 +1,32 @@
 <template>
   <v-container pa-4 class="secondary darken-1" app>
-    <p class="display-1 secondary--text text--lighten-1">What do we do?</p>
+    <p style="text-align: end" class="display-1 secondary--text text--lighten-1">What do we do?</p>
 
     <v-layout pa-1 row wrap justify-space-between align-center>
       <v-flex xs12 md6 pa-4>
-        <p
-          class="subheading"
-        >Lorem ipsum dolor sit, amet consectetur adipisicing elit. Porro reiciendis atque laboriosam ipsa. Id expedita eveniet nulla fugit, saepe asperiores quaerat vel eos quisquam eaque dolores veniam sequi nisi deserunt?</p>
-        <p
-          class="subheading"
-        >Lorem ipsum dolor sit, amet consectetur adipisicing elit. Porro reiciendis atque laboriosam ipsa. Id expedita eveniet nulla fugit, saepe asperiores quaerat vel eos quisquam eaque dolores veniam sequi nisi deserunt?</p>
+        <div>
+          <p class="headline">You know what we hate?</p>
+          <p class="subheading">
+            Cosntantly having to accept/deny the
+            <span
+              class="font-weight-bold primary--text text--lighten-1"
+            >EXACT SAME</span> Github invitations
+            <span
+              class="font-weight-bold primary--text text--lighten-1"
+            >EVERY. SINGLE. DAY.</span>
+            We think that you should be able to save all of the time you spend every day accepting invites
+            to get some awesome code written!
+          </p>
+        </div>
+        <p class="subheading">
+          Simply connect to your Github and whitelist users that you'd like us to automatically accept invitations from
+          on your behalf, or choose which users to block. It's as simply as a couple of clicks!
+        </p>
+        <v-btn style="margin-left: 0;" flat class="secondary outlined">Sign Up</v-btn>
       </v-flex>
 
       <v-flex xs12 md6 class="imgwrapper">
-        <img class="undrawimg" src="../../assets/undraw_reminder_pa79.svg" alt>
+        <img class="undrawimg" src="../../assets/undraw_reminder_pa79 (1).svg" alt>
       </v-flex>
     </v-layout>
   </v-container>
