@@ -59,7 +59,7 @@
         </svg>
         <h3
           class="headline pa-4 secondary--text font-weight-thin grey--text text--lighten-3"
-        >A personal assistant to manage your github invites</h3>
+        >A bouncer for your your GitHub invites</h3>
       </div>
       <div class="jumbowrapperbottom">
         <v-btn large flat class="primary outlined">About</v-btn>
