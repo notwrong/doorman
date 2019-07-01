@@ -12,17 +12,18 @@
     </v-toolbar>
 
     <v-content>
-      <HelloWorld />
+      <Home/>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
-import firebase from 'firebase';
+import HelloWorld from "./components/HelloWorld";
+import firebase from "firebase";
+import Home from "./views/Home";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     HelloWorld,
     Home
