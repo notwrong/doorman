@@ -18,23 +18,17 @@
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld";
+import Home from "./views/Home.vue";
 import firebase from "firebase";
-import Home from "./views/Home";
 
 export default {
   name: "App",
   components: {
-    HelloWorld,
     Home
   },
   data() {
     return {};
   },
-  methods: {
-    signUp: function() {
-      fi;
-    }
-  }
+  methods: {}
 };
 </script>
