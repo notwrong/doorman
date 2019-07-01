@@ -1,5 +1,5 @@
 <template>
-  <v-container app>
+  <v-container app class="wrapper">
     <!-- this v-card is the background card for all payment options -->
     <v-card depressed class="pa-3 my-3 grey darken-4">
       <!-- v-layout is the grid ability to space out the payment plans -->
@@ -14,7 +14,13 @@
           v-for="plan in paymentOptions"
           :key="plan.planName"
         >
-          <div class="card">
+          <div
+            class="card"
+            data-aos="slide-right"
+            data-aos-easing="ease-in-out"
+            data-aos-delay="100"
+            data-aos-duration="1500"
+          >
             <div class="upperCard">
               <!-- the title of the card -->
               <v-card-text>
@@ -31,7 +37,7 @@
               </v-card-text>
               <!-- the button of the card -->
               <v-card-actions>
-                <v-btn id="theButton" height="100" depressed color="grey">Sign Up</v-btn>
+                <v-btn class="primary" height="100" depressed color="grey">Sign Up</v-btn>
               </v-card-actions>
             </div>
           </div>
@@ -81,6 +87,13 @@ export default {
   justify-content: space-between;
   padding: inherit;
 }
+
+/* [data-aos] {
+  visibility: hidden;
+};
+ [data-aos].animated {
+  visibility: visible;
+}; */
 
 .title {
   text-align: center;
