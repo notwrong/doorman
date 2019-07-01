@@ -15,12 +15,6 @@ export default new Vuex.Store({
     setCurrentUser(state, user) {
       state.currentUser = user;
     },
-    updateBlocked(state, user) {
-      state.currentUser = user;
-    },
-    updateAllowed(state, user) {
-      state.currentUser = user;
-    },
     ...vuexfireMutations
   },
   actions: {
@@ -95,7 +89,7 @@ export default new Vuex.Store({
         .doc(`${state.currentUser.id}`)
         .update(updatedUser)
         .then(() => {
-          commit("updateBlocked", updatedUser);
+          commit("setCurrentUser", updatedUser);
         })
         .catch(err => console.error({ message: err.message, code: err.code }));
     },
@@ -110,12 +104,37 @@ export default new Vuex.Store({
         .doc(`${state.currentUser.id}`)
         .update(updatedUser)
         .then(() => {
-          commit("updateAllowed", updatedUser);
+          commit("setCurrentUser", updatedUser);
+        })
+        .catch(err => console.error({ message: err.message, code: err.code }));
+    },
+    deleteUserRule({ commit, state }, user) {
+      let updatedUser = state.currentUser;
+
+      if (updatedUser.block && updatedUser.block[user.id])
+        delete updatedUser.block[user.id];
+      if (updatedUser.allow && updatedUser.allow[user.id])
+        delete updatedUser.allow[user.id];
+
+      db.collection("users")
+        .doc(`${state.currentUser.id}`)
+        .update(updatedUser)
+        .then(() => {
+          commit("setCurrentUser", updatedUser);
         })
         .catch(err => console.error({ message: err.message, code: err.code }));
     }
   },
   getters: {
+    blockedAndAllowed: ({ currentUser: u }) => {
+      return u && Object.values(u.allow).concat(Object.values(u.block));
+    },
+    isAllowed: ({ currentUser: u }) => user => {
+      return u.allow.hasOwnProperty(user.id);
+    },
+    isBlocked: ({ currentUser: u }) => user => {
+      return u.block.hasOwnProperty(user.id);
+    },
     firstName(state) {
       if (state.currentUser) {
         return state.currentUser.name.split(" ")[0];
