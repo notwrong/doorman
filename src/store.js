@@ -24,7 +24,12 @@ export default new Vuex.Store({
     ...vuexfireMutations
   },
   actions: {
-    githubLogin({ commit }) {
+    bindCurrentUser: firestoreAction(({ state, bindFirestoreRef }) => {
+      return bindFirestoreRef(
+        'currentUser', 
+        db.collection('users').doc(state.currentUser.id)
+      )
+    }),
       const provider = new firebase.auth.GithubAuthProvider();
       provider.addScope("repo:invite");
       provider.setCustomParameters({
