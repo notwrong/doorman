@@ -12,28 +12,28 @@
     </v-toolbar>
 
     <v-content>
-      <HelloWorld />
+
+      <Home />
     </v-content>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+
+import Home from "./views/Home.vue";
 import firebase from 'firebase';
+
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
     Home
   },
   data() {
     return {};
   },
   methods: {
-    signUp: function() {
-      fi;
-    }
+
   }
 };
 </script>
