@@ -1,7 +1,9 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { db, auth } from "./utils/firebaseConfig";
 import firebase from "firebase";
+import { vuexfireMutations, firestoreAction } from 'vuexfire';
+import { db, auth } from "./utils/firebaseConfig";
+import router from './router';
 
 Vue.use(Vuex);
 
@@ -18,7 +20,8 @@ export default new Vuex.Store({
     },
     updateAllowed(state, user) {
       state.currentUser = user;
-    }
+  },
+    ...vuexfireMutations
   },
   actions: {
     githubLogin({ commit }) {
