@@ -58,6 +58,8 @@ export default new Vuex.Store({
             .set(newUser);
 
           commit("setCurrentUser", newUser);
+          const idToken = await auth.currentUser.getIdToken(true);
+          localStorage.setItem('idToken', idToken)
           router.push("/dashboard");
         } else {
           const userRef = db
@@ -77,6 +79,8 @@ export default new Vuex.Store({
             .get();
 
           commit("setCurrentUser", authedUser.data());
+          const idToken = await auth.currentUser.getIdToken(true);
+          localStorage.setItem('idToken', idToken)
           router.push("/dashboard");
         }
       } catch (err) {
