@@ -1,5 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import 'firebase/auth'
 import Vue from 'vue';
 import { firestorePlugin } from 'vuefire';
 
@@ -19,12 +20,5 @@ firebase.initializeApp(config);
 
 const db = firebase.firestore();
 const auth = firebase.auth();
-
-// date issue fix according to firebase
-const settings = {
-  timestampsInSnapshots: true
-};
-
-db.settings(settings);
 
 export { db, auth };
