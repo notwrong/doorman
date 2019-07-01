@@ -1,7 +1,7 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import { db, auth } from './utils/firebaseConfig';
-import firebase from 'firebase';
+import Vue from "vue";
+import Vuex from "vuex";
+import { db, auth } from "./utils/firebaseConfig";
+import firebase from "firebase";
 
 Vue.use(Vuex);
 
@@ -17,9 +17,9 @@ export default new Vuex.Store({
   actions: {
     githubLogin({ commit }) {
       const provider = new firebase.auth.GithubAuthProvider();
-      provider.addScope('repo:invite');
+      provider.addScope("repo:invite");
       provider.setCustomParameters({
-        allow_signup: 'false'
+        allow_signup: "false"
       });
 
       auth
@@ -35,18 +35,31 @@ export default new Vuex.Store({
               id: `${creds.additionalUserInfo.profile.id}`,
               user_id: creds.user.uid
             };
-            db.collection('users')
+            db.collection("users")
               .doc(`${newUser.id}`)
               .set(newUser)
               .then(() => {
-                commit('setCurrentUser', newUser);
+                commit("setCurrentUser", newUser);
               });
           } else {
-            db.collection('users')
-              .doc(`${creds.additionalUserInfo.profile.id}`)
-              .get()
-              .then(user => {
-                commit('setCurrentUser', user.data());
+            const userRef = db
+              .collection("users")
+              .doc(`${creds.additionalUserInfo.profile.id}`);
+
+            userRef
+              .update({
+                creds: {
+                  ...creds.credential,
+                  refreshToken: creds.user.refreshToken
+                }
+              })
+              .then(() => {
+                db.collection("users")
+                  .doc(`${userRef.id}`)
+                  .get()
+                  .then(user => {
+                    commit("setCurrentUser", user.data());
+                  });
               });
           }
         })
