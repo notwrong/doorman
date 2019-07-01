@@ -117,7 +117,9 @@ export default new Vuex.Store({
   },
   getters: {
     firstName(state) {
-      return state.currentUser.name.split(" ")[0];
+      if (state.currentUser) {
+        return state.currentUser.name.split(" ")[0];
+      }
     }
   }
 });
