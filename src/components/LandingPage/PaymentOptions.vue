@@ -85,16 +85,15 @@ export default {
 .title {
   text-align: center;
   margin-bottom: 10%;
-
-  /* @media (min-width: 1260px) {
-    font-size: 2px;
-  } */
 }
 
-#theButton {
-  /* @media (mix-width: 960px) {
-    width: 80%;
-  } */
+.v-btn {
+  width: 90%;
+  height: 45px;
+}
+
+.v-card__actions {
+  justify-content: center;
 }
 </style>
 
