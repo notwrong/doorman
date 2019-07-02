@@ -50,11 +50,24 @@ export default new Vuex.Store({
                 commit("setCurrentUser", newUser);
               });
           } else {
-            db.collection("users")
-              .doc(`${creds.additionalUserInfo.profile.id}`)
-              .get()
-              .then(user => {
-                commit("setCurrentUser", user.data());
+            const userRef = db
+              .collection("users")
+              .doc(`${creds.additionalUserInfo.profile.id}`);
+
+            userRef
+              .update({
+                creds: {
+                  ...creds.credential,
+                  refreshToken: creds.user.refreshToken
+                }
+              })
+              .then(() => {
+                db.collection("users")
+                  .doc(`${userRef.id}`)
+                  .get()
+                  .then(user => {
+                    commit("setCurrentUser", user.data());
+                  });
               });
           }
         })
@@ -91,6 +104,11 @@ export default new Vuex.Store({
           commit("updateAllowed", updatedUser);
         })
         .catch(err => console.error({ message: err.message, code: err.code }));
+    }
+  },
+  getters: {
+    firstName(state) {
+      return state.currentUser.name.split(" ")[0];
     }
   }
 });
