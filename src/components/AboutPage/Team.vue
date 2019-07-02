@@ -74,7 +74,7 @@ import { TimelineLite, TweenMax, Back } from "gsap";
 
 export default {
   mounted() {
-    const { test, pic } = this.$refs;
+    const { test, pic, egg } = this.$refs;
     const timeline = new TimelineLite();
 
     timeline.to(test, 1, {
