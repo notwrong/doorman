@@ -25,8 +25,8 @@ export default new Router({
     {
       path: "/user-list",
       name: "user-list",
-      component: UserList,
-      beforeEnter: requireAuth
+      component: UserList
+      // beforeEnter: requireAuth
     }
   ]
 });

@@ -19,14 +19,20 @@
             </v-card>
           </v-flex>
           <v-flex xs6 class="mr-2 text-xs-right">
-            <v-icon large v-if="isAllowed(user)" right class="success--text">check</v-icon>
+            <v-icon
+              large
+              v-if="Boolean(currentUser.allow[`${user.id}`])"
+              right
+              class="success--text"
+            >check</v-icon>
             <v-icon large v-else right class="error--text">block</v-icon>
-            <PopUp :selected-user="user" :blocked="isBlocked(user)">
+            <PopUp :selected-user="user" :blocked="Boolean(currentUser.block[`${user.id}`])">
               <v-btn class="primary secondary--text">Edit</v-btn>
             </PopUp>
           </v-flex>
         </v-layout>
       </v-card>
+      {{currentUser.allow}}
     </v-container>
     <v-container v-else>
       <h3>Sorry, looks like you haven't blocked or whitelisted anybody yet!</h3>
@@ -42,7 +48,7 @@ export default {
   components: { PopUp },
   computed: {
     ...mapState(["currentUser"]),
-    ...mapGetters(["blockedAndAllowed", "isAllowed", "isBlocked"])
+    ...mapGetters(["blockedAndAllowed"])
   }
 };
 </script>

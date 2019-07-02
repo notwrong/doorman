@@ -120,12 +120,6 @@ export default new Vuex.Store({
     blockedAndAllowed: ({ currentUser: u }) => {
       return u && Object.values(u.allow).concat(Object.values(u.block));
     },
-    isAllowed: ({ currentUser: u }) => user => {
-      return u.allow.hasOwnProperty(user.id);
-    },
-    isBlocked: ({ currentUser: u }) => user => {
-      return u.block.hasOwnProperty(user.id);
-    },
     firstName(state) {
       return state.currentUser.name.split(" ")[0];
     }
