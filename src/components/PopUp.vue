@@ -3,19 +3,26 @@
     <slot slot="activator"></slot>
     <v-card>
       <v-card-title>
-        <h2>Current User: {{currentUser.login}}</h2>
-        <br />
         <h2>Edit {{selectedUser.login}}</h2>
       </v-card-title>
-      <v-card-text>This user is currently either blocked/allowed/neither. Edit permissions?</v-card-text>
+      <v-card-text>
+        {{selectedUser.login}} is currently
+        <span
+          v-if="!blocked"
+        >whitelisted and any requests from them will be automatically accepted.</span>
+        <span v-if="blocked">blacklisted and any requests from them will be automatically refused.</span>
+        Change this permission?
+      </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn
+          v-if="!blocked"
           flat
           class="success"
           @click="addBlocked(selectedUser), dialog=false"
         >Yes, block this user</v-btn>
         <v-btn
+          v-if="blocked"
           flat
           class="success"
           @click="addAllowed(selectedUser), dialog=false"
@@ -30,7 +37,7 @@
 import { mapActions, mapState } from "vuex";
 
 export default {
-  props: ["selectedUser"],
+  props: ["selectedUser", "blocked"],
   data() {
     return {
       dialog: false

@@ -98,10 +98,10 @@ export default new Vuex.Store({
       return u && Object.values(u.allow).concat(Object.values(u.block));
     },
     isAllowed: ({ currentUser: u }) => user => {
-      return Boolean(u.allow && u.allow[user.id]);
+      return u.allow.hasOwnProperty(user.id);
     },
     isBlocked: ({ currentUser: u }) => user => {
-      return Boolean(u.block && u.block[user.id]);
+      return u.block.hasOwnProperty(user.id);
     }
   }
 });

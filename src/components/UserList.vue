@@ -6,12 +6,12 @@
       <v-card class="pa-3 my-3" v-for="(user, i) in blockedAndAllowed" :key="i">
         <v-layout row justify-space-between>
           <v-flex xs6>
-            <div class="pt-1">Username: {{user.login}}</div>
+            <div class="pt-1">Username: {{user.login}} is blocked? {{isBlocked(user)}}</div>
           </v-flex>
           <v-flex xs6 class="mr-2 text-xs-right">
             <v-icon large v-if="isAllowed(user)" right class="success--text">check</v-icon>
             <v-icon large v-if="isBlocked(user)" right class="error--text">block</v-icon>
-            <PopUp :selected-user="user">
+            <PopUp :selected-user="user" :blocked="isBlocked(user)">
               <v-btn class="primary">Edit</v-btn>
             </PopUp>
           </v-flex>
