@@ -3,6 +3,12 @@
     <!-- the background card for all the team members -->
     <v-card depressed class="pa-3 my-2 grey darken-4">
       <h1>Meet The Team</h1>
+
+      <h3>
+        We're a team of full stack developers that have attended Lambda School. Most of us have been Team Leads, Project Managers,
+        or Section Leads and got really tired of having to constantly accept student and co-worker github invites for repos when working
+        on projects. So we decided to get together and build an app that can automate that problem away.
+      </h3>
       <!-- the layout for the grid of the team members -->
       <v-layout row wrap justify-space-around>
         <!-- this wraps the team member card -->
@@ -130,6 +136,15 @@ export default {
 }
 h1 {
   text-align: center;
+  font-size: 40px;
+}
+h3 {
+  text-align: center;
+  padding: 1% 5%;
+}
+
+a {
+  text-decoration: none;
 }
 
 .v-card__actions {
