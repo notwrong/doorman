@@ -62,19 +62,44 @@
       </v-btn>
     </v-toolbar-title>
     <v-spacer></v-spacer>
+<<<<<<< HEAD
     <v-btn v-on:click="githubLogin()" flat color="grey">
+=======
+    <v-btn flat color="grey">About</v-btn>
+    <v-btn flat v-if="!currentUser" @click="githubLogin" color="grey">
+>>>>>>> origin/feat/fetch-invite-data
       <span>Login</span>
       <v-icon right>account_circle</v-icon>
+    </v-btn>
+    <v-btn flat v-else @click="logUser" color="primary">
+      <span>Welcome, {{ firstName }}</span>
+      <img class="avatar" :src="currentUser.avatar_url" alt="User avatar" />
+      <img />
     </v-btn>
   </v-toolbar>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from "vuex";
 export default {
   methods: {
-    ...mapActions(['githubLogin'])
+    ...mapActions(["githubLogin"]),
+    logUser() {
+      console.log(this.currentUser);
+    }
+  },
+  computed: {
+    ...mapState(["currentUser"]),
+    ...mapGetters(["firstName"])
   }
 };
 </script>
 
+<style>
+.avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-left: 24px;
+}
+</style>
