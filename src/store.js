@@ -1,9 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import firebase from "firebase";
-import { vuexfireMutations, firestoreAction } from 'vuexfire';
 import { db, auth } from "./utils/firebaseConfig";
-import router from './router';
+import router from "./router";
 
 Vue.use(Vuex);
 
@@ -15,15 +14,21 @@ export default new Vuex.Store({
     setCurrentUser(state, user) {
       state.currentUser = user;
     },
-    ...vuexfireMutations
+    updateCurrentUser(state, { updatedUser, scope }) {
+      if (scope.includes("block"))
+        state.currentUser = {
+          ...state.currentUser,
+          block: { ...updatedUser.block }
+        };
+
+      if (scope.includes("allow"))
+        state.currentUser = {
+          ...state.currentUser,
+          allow: { ...updatedUser.allow }
+        };
+    }
   },
   actions: {
-    bindCurrentUser: firestoreAction(({ state, bindFirestoreRef }) => {
-      return bindFirestoreRef(
-        'currentUser', 
-        db.collection('users').doc(state.currentUser.id)
-      )
-    }),
     async githubLogin({ commit }) {
       const provider = new firebase.auth.GithubAuthProvider();
       provider.addScope("repo:invite");
@@ -31,7 +36,7 @@ export default new Vuex.Store({
         allow_signup: "false"
       });
 
-      const creds = await auth.signInWithPopup(provider)
+      const creds = await auth.signInWithPopup(provider);
 
       try {
         if (creds.additionalUserInfo.isNewUser) {
@@ -46,37 +51,39 @@ export default new Vuex.Store({
             block: {},
             allow: {}
           };
-          
-          await db.collection("users").doc(`${newUser.id}`).set(newUser)
-          
+
+          await db
+            .collection("users")
+            .doc(`${newUser.id}`)
+            .set(newUser);
+
           commit("setCurrentUser", newUser);
-          router.push('/dashboard')
-        }
-        
-        else {
-          const userRef = db.collection("users")
+          router.push("/dashboard");
+        } else {
+          const userRef = db
+            .collection("users")
             .doc(`${creds.additionalUserInfo.profile.id}`);
 
           await userRef.update({
-              creds: {
-                ...creds.credential,
-                refreshToken: creds.user.refreshToken
-              }
-            })
-          
-          const authedUser = await db.collection("users")
-                                    .doc(`${userRef.id}`).get()
-          
-          commit("setCurrentUser", authedUser.data());
-          router.push('/dashboard')
-        }
-      }
+            creds: {
+              ...creds.credential,
+              refreshToken: creds.user.refreshToken
+            }
+          });
 
-      catch (err) {
-        console.error(err)
+          const authedUser = await db
+            .collection("users")
+            .doc(`${userRef.id}`)
+            .get();
+
+          commit("setCurrentUser", authedUser.data());
+          router.push("/dashboard");
+        }
+      } catch (err) {
+        console.error(err);
       }
     },
-    addBlocked({ commit, state }, user) {
+    async addBlocked({ commit, state }, user) {
       let updatedUser = state.currentUser;
 
       // first conditional prevents error from devs if they'd signed in before the block/allow objects were added to the default state object
@@ -85,30 +92,35 @@ export default new Vuex.Store({
         delete updatedUser.allow[user.id];
       updatedUser.block[user.id] = user;
 
-      db.collection("users")
-        .doc(`${state.currentUser.id}`)
-        .update(updatedUser)
-        .then(() => {
-          commit("setCurrentUser", updatedUser);
-        })
-        .catch(err => console.error({ message: err.message, code: err.code }));
+      try {
+        await db
+          .collection("users")
+          .doc(`${state.currentUser.id}`)
+          .update(updatedUser);
+
+        commit("updateCurrentUser", { updatedUser, scope: ["block"] });
+      } catch (err) {
+        console.error(err);
+      }
     },
-    addAllowed({ commit, state }, user) {
+    async addAllowed({ commit, state }, user) {
       let updatedUser = state.currentUser;
 
       if (updatedUser.block && updatedUser.block[user.id])
         delete updatedUser.block[user.id];
       updatedUser.allow[user.id] = user;
+      try {
+        await db
+          .collection("users")
+          .doc(`${state.currentUser.id}`)
+          .update(updatedUser);
 
-      db.collection("users")
-        .doc(`${state.currentUser.id}`)
-        .update(updatedUser)
-        .then(() => {
-          commit("setCurrentUser", updatedUser);
-        })
-        .catch(err => console.error({ message: err.message, code: err.code }));
+        commit("updateCurrentUser", { updatedUser, scope: ["allow"] });
+      } catch (err) {
+        console.error(err);
+      }
     },
-    deleteUserRule({ commit, state }, user) {
+    async deleteUserRule({ commit, state }, user) {
       let updatedUser = state.currentUser;
 
       if (updatedUser.block && updatedUser.block[user.id])
@@ -116,24 +128,21 @@ export default new Vuex.Store({
       if (updatedUser.allow && updatedUser.allow[user.id])
         delete updatedUser.allow[user.id];
 
-      db.collection("users")
-        .doc(`${state.currentUser.id}`)
-        .update(updatedUser)
-        .then(() => {
-          commit("setCurrentUser", updatedUser);
-        })
-        .catch(err => console.error({ message: err.message, code: err.code }));
+      try {
+        await db
+          .collection("users")
+          .doc(`${state.currentUser.id}`)
+          .update(updatedUser);
+
+        commit("updateCurrentUser", { updatedUser, scope: ["block", "allow"] });
+      } catch (err) {
+        console.error(err);
+      }
     }
   },
   getters: {
     blockedAndAllowed: ({ currentUser: u }) => {
       return u && Object.values(u.allow).concat(Object.values(u.block));
-    },
-    isAllowed: ({ currentUser: u }) => user => {
-      return u.allow.hasOwnProperty(user.id);
-    },
-    isBlocked: ({ currentUser: u }) => user => {
-      return u.block.hasOwnProperty(user.id);
     },
     firstName(state) {
       if (state.currentUser) {
