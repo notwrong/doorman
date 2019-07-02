@@ -38,9 +38,8 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import PopUp from "./PopUp.vue";
-import { db } from "../utils/firebaseConfig";
 
 export default {
   components: { PopUp },
