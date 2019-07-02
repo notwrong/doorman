@@ -92,5 +92,16 @@ export default new Vuex.Store({
         })
         .catch(err => console.error({ message: err.message, code: err.code }));
     }
+  },
+  getters: {
+    blockedAndAllowed: ({ currentUser: u }) => {
+      return u && Object.values(u.allow).concat(Object.values(u.block));
+    },
+    isAllowed: ({ currentUser: u }) => user => {
+      return Boolean(u.allow && u.allow[user.id]);
+    },
+    isBlocked: ({ currentUser: u }) => user => {
+      return Boolean(u.block && u.block[user.id]);
+    }
   }
 });

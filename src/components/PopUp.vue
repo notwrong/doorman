@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   props: ["selectedUser"],
@@ -40,9 +40,7 @@ export default {
     ...mapActions({ addBlocked: "addBlocked", addAllowed: "addAllowed" })
   },
   computed: {
-    currentUser() {
-      return this.$store.state.currentUser;
-    }
+    ...mapState(["currentUser"])
   }
 };
 </script>
