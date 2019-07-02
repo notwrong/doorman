@@ -1,11 +1,31 @@
 const admin = require('firebase-admin');
 const serviceAccount = require('./serviceAccount.json');
-const functions = require('firebase-functions');
+const axios = require('axios');
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: 'https://not-wrong-doorman.firebaseio.com'
 });
 
-exports.myroute = functions.https.onRequest((req, res) => {
-  res.status(200).json({ message: "I'm alive!!!!" });
+const functions = require('firebase-functions');
+const express = require('express');
+const cors = require('cors');
+
+const app = express();
+
+app.use(cors({ origin: true }));
+
+app.post('/', (req, res) => {
+  const currentUser = req.body.currentUser;
+  functions.pubsub.schedule('every 30 minutes').onRun(context => {
+    const url = 'https://api.github.com/user/repository_invitations';
+    const options = {
+      headers: {
+        Authorization: currentUser.creds.accessToken
+      }
+    };
+    axios.get(url, options);
+  });
 });
+
+exports.invites = functions.https.onRequest(app);
