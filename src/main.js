@@ -8,6 +8,7 @@ import { auth } from "./utils/firebaseConfig";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
+Vue.config.devtools = true;
 Vue.config.productionTip = false;
 
 let app = null;
