@@ -13,6 +13,11 @@
           class="my-2 pa-2 secondary"
           v-for="plan in paymentOptions"
           :key="plan.planName"
+          data-aos="flip-up"
+          data-aos-easing="ease-in-out"
+          data-aos-delay="300"
+          data-aos-duration="600"
+          style="transform-style: preserve-3d;"
         >
           <div class="card">
             <div class="upperCard">
@@ -74,7 +79,7 @@ export default {
         planName: "START-UP",
         img:
           "https://www.aislelabs.com/wp-content/themes/aislelabs3/images/team.png",
-        description: "Groups Under 10",
+        description: "Groups < 10",
         cost: "$1.50",
         available: false
       },
@@ -82,7 +87,7 @@ export default {
         planName: "ENTERPRISE",
         img:
           "https://www.geekdentalmarketing.com/wp-content/uploads/2018/09/team.png",
-        description: "Groups Over 10",
+        description: "Groups > 10",
         cost: "$1",
         available: false
       }
