@@ -1,7 +1,5 @@
 <template>
   <v-app class="users-list" dark>
-    <h1 class="primary--text text-xs-center mt-5">Github Users</h1>
-
     <v-container v-if="blockedAndAllowed.length>0" class="my-5">
       <v-card class="pa-3 my-3 secondary" v-for="(user, i) in blockedAndAllowed" :key="i">
         <v-layout row justify-space-between>
