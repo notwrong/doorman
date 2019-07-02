@@ -1,6 +1,5 @@
 const admin = require('firebase-admin');
 const serviceAccount = require('./serviceAccount.json');
-const axios = require('axios');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -15,23 +14,19 @@ const app = express();
 
 app.use(cors({ origin: true }));
 
-exports.fetchInvite = functions.pubsub.schedule('every 30 minutes').onRun(context => {
-  app.post('/', async (req, res) => {
-    const id = req.body.id;
+app.get('/auth', async (req, res) => {
+  if (!req.headers.authorization) {
+    return res
+      .status(401)
+      .json({ message: 'Bad or missing credentials.  Please authorize the request.' });
+  } else {
     try {
-      const invites = await axios.get(
-        `https://api.github.com/user/repository_invitations`,
-        {
-          headers: {
-            Authorization: id
-          }
-        }
-      );
-      return res.send(invites);
+      const user = await admin.auth().verifyIdToken(req.headers.authorization);
+      return res.status(200).json(user);
     } catch (err) {
-      console.error(res.send({ code: err.code, message: err.message }));
+      return res.status(500).json({ code: err.code, message: err.message });
     }
-  });
+  }
 });
 
-exports.invites = functions.https.onRequest(app);
+exports.server = functions.https.onRequest(app);
