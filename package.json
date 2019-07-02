@@ -9,6 +9,7 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "@primer/octicons": "^9.1.1",
     "core-js": "^2.6.5",
     "firebase": "^6.2.4",
     "vee-validate": "^2.2.11",

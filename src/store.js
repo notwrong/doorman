@@ -12,6 +12,12 @@ export default new Vuex.Store({
   mutations: {
     setCurrentUser(state, user) {
       state.currentUser = user;
+    },
+    updateBlocked(state, user) {
+      state.currentUser = user;
+    },
+    updateAllowed(state, user) {
+      state.currentUser = user;
     }
   },
   actions: {
@@ -33,7 +39,9 @@ export default new Vuex.Store({
                 refreshToken: creds.user.refreshToken
               },
               id: `${creds.additionalUserInfo.profile.id}`,
-              user_id: creds.user.uid
+              user_id: creds.user.uid,
+              block: {},
+              allow: {}
             };
             db.collection("users")
               .doc(`${newUser.id}`)
@@ -42,6 +50,7 @@ export default new Vuex.Store({
                 commit("setCurrentUser", newUser);
               });
           } else {
+<<<<<<< HEAD
             const userRef = db
               .collection("users")
               .doc(`${creds.additionalUserInfo.profile.id}`);
@@ -60,8 +69,47 @@ export default new Vuex.Store({
                   .then(user => {
                     commit("setCurrentUser", user.data());
                   });
+=======
+            db.collection("users")
+              .doc(`${creds.additionalUserInfo.profile.id}`)
+              .get()
+              .then(user => {
+                commit("setCurrentUser", user.data());
+>>>>>>> master
               });
           }
+        })
+        .catch(err => console.error({ message: err.message, code: err.code }));
+    },
+    addBlocked({ commit, state }, user) {
+      let updatedUser = state.currentUser;
+
+      // first conditional prevents error from devs if they'd signed in before the block/allow objects were added to the default state object
+      // will be removed for production
+      if (updatedUser.allow && updatedUser.allow[user.id])
+        delete updatedUser.allow[user.id];
+      updatedUser.block[user.id] = user;
+
+      db.collection("users")
+        .doc(`${state.currentUser.id}`)
+        .update(updatedUser)
+        .then(() => {
+          commit("updateBlocked", updatedUser);
+        })
+        .catch(err => console.error({ message: err.message, code: err.code }));
+    },
+    addAllowed({ commit, state }, user) {
+      let updatedUser = state.currentUser;
+
+      if (updatedUser.block && updatedUser.block[user.id])
+        delete updatedUser.block[user.id];
+      updatedUser.allow[user.id] = user;
+
+      db.collection("users")
+        .doc(`${state.currentUser.id}`)
+        .update(updatedUser)
+        .then(() => {
+          commit("updateAllowed", updatedUser);
         })
         .catch(err => console.error({ message: err.message, code: err.code }));
     }
