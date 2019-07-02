@@ -6,8 +6,8 @@
       <v-card class="pa-3 my-3 secondary" v-for="(user, i) in blockedAndAllowed" :key="i">
         <v-layout row justify-space-between>
           <v-flex xs3>
-            <v-card class="py-1 text-xs-center primary--text" width="200">
-              <v-avatar class="mr-2">
+            <v-card class="py-1 text-xs-left primary--text" width="200">
+              <v-avatar class="mr-4 ml-2">
                 <img :src="user.avatar_url" />
               </v-avatar>
               {{user.login}}
