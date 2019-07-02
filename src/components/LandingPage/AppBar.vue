@@ -62,10 +62,14 @@
       </v-btn>
     </v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-btn flat color="primary">
-      <span v-if="!this.$store.state.currentUser" @click="login">Login</span>
-      <span v-else @click="logUser">Welcome, {{ getFirstName() }}</span>
+    <v-btn flat v-if="!this.$store.state.currentUser" @click="login" color="primary">
+      <span>Login</span>
       <v-icon right>account_circle</v-icon>
+    </v-btn>
+    <v-btn flat v-else @click="logUser" color="primary">
+      <span>Welcome, {{ getFirstName() }}</span>
+      <img class="avatar" :src="this.$store.state.currentUser.avatar_url" alt="User avatar" />
+      <img />
     </v-btn>
   </v-toolbar>
 </template>
@@ -86,3 +90,11 @@ export default {
 };
 </script>
 
+<style>
+.avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-left: 24px;
+}
+</style>
