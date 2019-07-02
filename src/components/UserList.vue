@@ -32,7 +32,6 @@
           </v-flex>
         </v-layout>
       </v-card>
-      {{currentUser.allow}}
     </v-container>
     <v-container v-else>
       <h3>Sorry, looks like you haven't blocked or whitelisted anybody yet!</h3>

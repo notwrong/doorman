@@ -13,6 +13,19 @@ export default new Vuex.Store({
   mutations: {
     setCurrentUser(state, user) {
       state.currentUser = user;
+    },
+    updateCurrentUser(state, { updatedUser, scope }) {
+      if (scope.includes("block"))
+        state.currentUser = {
+          ...state.currentUser,
+          block: { ...updatedUser.block }
+        };
+
+      if (scope.includes("allow"))
+        state.currentUser = {
+          ...state.currentUser,
+          allow: { ...updatedUser.allow }
+        };
     }
   },
   actions: {
@@ -70,7 +83,7 @@ export default new Vuex.Store({
         console.error(err);
       }
     },
-    addBlocked({ commit, state }, user) {
+    async addBlocked({ commit, state }, user) {
       let updatedUser = state.currentUser;
 
       // first conditional prevents error from devs if they'd signed in before the block/allow objects were added to the default state object
@@ -79,28 +92,35 @@ export default new Vuex.Store({
         delete updatedUser.allow[user.id];
       updatedUser.block[user.id] = user;
 
-      db.collection("users")
-        .doc(`${state.currentUser.id}`)
-        .update(updatedUser)
-        .then(() => {})
-        .catch(err => console.error({ message: err.message, code: err.code }));
-      commit("setCurrentUser", updatedUser);
+      try {
+        await db
+          .collection("users")
+          .doc(`${state.currentUser.id}`)
+          .update(updatedUser);
+
+        commit("updateCurrentUser", { updatedUser, scope: ["block"] });
+      } catch (err) {
+        console.error(err);
+      }
     },
-    addAllowed({ commit, state }, user) {
+    async addAllowed({ commit, state }, user) {
       let updatedUser = state.currentUser;
 
       if (updatedUser.block && updatedUser.block[user.id])
         delete updatedUser.block[user.id];
       updatedUser.allow[user.id] = user;
+      try {
+        await db
+          .collection("users")
+          .doc(`${state.currentUser.id}`)
+          .update(updatedUser);
 
-      db.collection("users")
-        .doc(`${state.currentUser.id}`)
-        .update(updatedUser)
-        .then(() => {})
-        .catch(err => console.error({ message: err.message, code: err.code }));
-      commit("setCurrentUser", updatedUser);
+        commit("updateCurrentUser", { updatedUser, scope: ["allow"] });
+      } catch (err) {
+        console.error(err);
+      }
     },
-    deleteUserRule({ commit, state }, user) {
+    async deleteUserRule({ commit, state }, user) {
       let updatedUser = state.currentUser;
 
       if (updatedUser.block && updatedUser.block[user.id])
@@ -108,12 +128,16 @@ export default new Vuex.Store({
       if (updatedUser.allow && updatedUser.allow[user.id])
         delete updatedUser.allow[user.id];
 
-      db.collection("users")
-        .doc(`${state.currentUser.id}`)
-        .update(updatedUser)
-        .then(() => {})
-        .catch(err => console.error({ message: err.message, code: err.code }));
-      commit("setCurrentUser", updatedUser);
+      try {
+        await db
+          .collection("users")
+          .doc(`${state.currentUser.id}`)
+          .update(updatedUser);
+
+        commit("updateCurrentUser", { updatedUser, scope: ["block", "allow"] });
+      } catch (err) {
+        console.error(err);
+      }
     }
   },
   getters: {
