@@ -18,7 +18,7 @@
       </v-card-text>
       <v-spacer></v-spacer>
       <v-card-actions>
-        <div class="button-group">
+        <div class="button-group mb-2">
           <v-btn
             v-if="!blocked"
             flat
