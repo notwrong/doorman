@@ -3,7 +3,7 @@ import Router from "vue-router";
 import Home from "./views/Home.vue";
 import About from "./views/About.vue";
 import { auth } from "./utils/firebaseConfig";
-import UserList from "./components/UserList.vue";
+import Dashboard from "./views/Dashboard.vue";
 
 Vue.use(Router);
 
@@ -21,11 +21,10 @@ export default new Router({
       name: "about",
       component: About
     },
-    //user-list route will eventually be replaced by the dashboard view
     {
-      path: "/user-list",
-      name: "user-list",
-      component: UserList
+      path: "/dashboard",
+      name: "dashboard",
+      component: Dashboard
       // beforeEnter: requireAuth
     }
   ]
