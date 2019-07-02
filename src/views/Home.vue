@@ -1,11 +1,5 @@
 <template>
-<<<<<<< HEAD
-  <v-app id="inspire" dark>
-    <AppBar />
-    <SearchBar v-if="this.$store.state.currentUser" />
-=======
   <div>
->>>>>>> master
     <JumboTron
       data-aos="fade-right"
       data-aos-easing="ease-in-out"
@@ -38,14 +32,12 @@ import JumboTron from "../components/LandingPage/JumboTron";
 import AboutSection from "../components/LandingPage/AboutSection";
 import PaymentOptions from "../components/LandingPage/PaymentOptions";
 import FinalCallToAction from "../components/LandingPage/FinalCallToAction";
-import SearchBar from "../components/Search/SearchBar.vue";
 
 export default {
   data: () => ({}),
   props: {},
   components: {
     JumboTron,
-    SearchBar,
     AboutSection,
     PaymentOptions,
     FinalCallToAction

@@ -1,6 +1,7 @@
 <template>
   <v-app id="inspire" dark>
     <AppBar />
+    <SearchBar v-if="this.$store.state.currentUser" />
     <v-content>
       <router-view></router-view>
     </v-content>
@@ -11,12 +12,14 @@
 <script>
 import AppBar from "./components/common/AppBar";
 import Footer from "./components/common/Footer";
+import SearchBar from "./components/Search/SearchBar.vue";
 
 export default {
   name: "App",
   components: {
     AppBar,
-    Footer,
+    SearchBar,
+    Footer
   }
 };
 </script>
