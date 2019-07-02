@@ -1,11 +1,11 @@
 <template>
   <v-app id="inspire" dark>
-    <AppBar/>
-    <JumboTron/>
-    <AboutSection/>
-    <PaymentOptions/>
-    <FinalCallToAction/>
-    <Footer/>
+    <AppBar />
+    <JumboTron />
+    <AboutSection />
+    <PaymentOptions />
+    <FinalCallToAction />
+    <Footer />
   </v-app>
 </template>
 

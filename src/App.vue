@@ -12,7 +12,7 @@
     </v-toolbar>
 
     <v-content>
-      <Home/>
+      <Home />
     </v-content>
   </v-app>
 </template>

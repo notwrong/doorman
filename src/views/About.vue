@@ -1,5 +1,23 @@
+
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+  <v-app id="about" dark>
+    <AppBar />
+    <Footer />
+  </v-app>
 </template>
+
+
+<script>
+import AppBar from "../components/LandingPage/AppBar";
+import Footer from "../components/LandingPage/Footer";
+
+export default {
+  data() {},
+
+  components: {
+    AppBar,
+
+    Footer
+  }
+};
+</script>
