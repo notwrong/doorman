@@ -1,6 +1,6 @@
 <template>
   <v-toolbar dark color="teal">
-    <v-toolbar-title>Select User</v-toolbar-title>
+    <v-toolbar-title>State selection</v-toolbar-title>
     <v-autocomplete
       v-model="select"
       :loading="loading"
@@ -11,12 +11,12 @@
       flat
       hide-no-data
       hide-details
-      label="GitHub username"
+      label="What state are you from?"
       solo-inverted
     ></v-autocomplete>
-    <!-- <v-btn icon>
+    <v-btn icon>
       <v-icon>more_vert</v-icon>
-    </v-btn>-->
+    </v-btn>
   </v-toolbar>
 </template>
 
@@ -33,31 +33,32 @@ export default {
   },
   watch: {
     search(val) {
-      val && val !== this.select && this.getUserNames(val);
+      val && val !== this.select && this.querySelections(val);
     }
   },
   methods: {
-    async getUserNames(v) {
-      try {
-        const url = `https://api.github.com/search/users?q=${v}`;
-        const token = this.$store.state.currentUser.creds.accessToken;
+    querySelections(v) {
+      this.loading = true;
+      const url = `https://api.github.com/search/users?q=${v}`;
+      const token = this.$store.state.currentUser.creds.accessToken;
 
-        const users = await axios({
-          method: "GET",
-          url,
-          headers: {
-            Authorization: `token ${token}`
-          }
-        });
+      axios({
+        method: "GET",
+        url,
+        headers: {
+          Authorization: `token ${token}`
+        }
+      })
+        .then(users => {
+          console.log("RESOLVED PROMISE", users.data.items);
+          const names = users.data.items.map(data => data.login);
+          this.items = [...names];
+          // this.items = [...users.data.items];
+        })
+        .catch(error => console.log(error));
 
-        this.items.push(...users.data.items);
-      } catch (error) {
-        console.log("AXIOS ERROR:", error);
-      }
+      this.loading = false;
     }
   }
 };
 </script>
-
-<style>
-</style>
