@@ -6,7 +6,12 @@
       <v-card class="pa-3 my-3 secondary" v-for="(user, i) in blockedAndAllowed" :key="i">
         <v-layout row justify-space-between>
           <v-flex xs3>
-            <v-card class="py-1 text-xs-left primary--text" width="200">
+            <v-card
+              :href="user.html_url"
+              target="_blank"
+              class="py-1 text-xs-left username primary--text"
+              width="200"
+            >
               <v-avatar class="mr-4 ml-2">
                 <img :src="user.avatar_url" />
               </v-avatar>
@@ -14,9 +19,14 @@
             </v-card>
           </v-flex>
           <v-flex xs6 class="mr-2 text-xs-right">
-            <v-icon large v-if="isAllowed(user)" right class="success--text">check</v-icon>
+            <v-icon
+              large
+              v-if="Boolean(currentUser.allow[`${user.id}`])"
+              right
+              class="success--text"
+            >check</v-icon>
             <v-icon large v-else right class="error--text">block</v-icon>
-            <PopUp :selected-user="user" :blocked="isBlocked(user)">
+            <PopUp :selected-user="user" :blocked="Boolean(currentUser.block[`${user.id}`])">
               <v-btn class="primary secondary--text">Edit</v-btn>
             </PopUp>
           </v-flex>
@@ -32,19 +42,21 @@
 <script>
 import { mapActions, mapState, mapGetters } from "vuex";
 import PopUp from "./PopUp.vue";
+import { db } from "../utils/firebaseConfig";
 
 export default {
   components: { PopUp },
   computed: {
     ...mapState(["currentUser"]),
-    ...mapGetters(["blockedAndAllowed", "isAllowed", "isBlocked"])
+    ...mapGetters(["blockedAndAllowed"])
   }
 };
 </script>
 
 <style scoped>
 .username {
-  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
 }
 .success--text,
 .error--text {
