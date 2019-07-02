@@ -1,5 +1,22 @@
+
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+  <v-app id="about" dark>
+    <Team />
+    <Contact />
+  </v-app>
 </template>
+
+
+<script>
+import Team from "../components/AboutPage/Team";
+import Contact from "../components/AboutPage/Contact";
+
+export default {
+  data() {},
+
+  components: {
+    Team,
+    Contact
+  }
+};
+</script>

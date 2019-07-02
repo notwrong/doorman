@@ -1,17 +1,33 @@
 <template>
-  <v-app id="inspire" dark>
-    <AppBar/>
-    <JumboTron/>
-    <AboutSection/>
-    <PaymentOptions/>
-    <FinalCallToAction/>
-    <Footer/>
-  </v-app>
+  <div>
+    <JumboTron
+      data-aos="fade-right"
+      data-aos-easing="ease-in-out"
+      data-aos-delay="180"
+      data-aos-duration="1500"
+    />
+    <AboutSection
+      data-aos="fade-left"
+      data-aos-easing="ease-in-out"
+      data-aos-delay="180"
+      data-aos-duration="1200"
+    />
+    <PaymentOptions
+      data-aos="fade-right"
+      data-aos-easing="ease-in-out"
+      data-aos-delay="90"
+      data-aos-duration="750"
+    />
+    <FinalCallToAction
+      data-aos="fade-left"
+      data-aos-easing="ease-in-out"
+      data-aos-delay="90"
+      data-aos-duration="600"
+    />
+  </div>
 </template>
 
 <script>
-import AppBar from "../components/LandingPage/AppBar";
-import Footer from "../components/LandingPage/Footer";
 import JumboTron from "../components/LandingPage/JumboTron";
 import AboutSection from "../components/LandingPage/AboutSection";
 import PaymentOptions from "../components/LandingPage/PaymentOptions";
@@ -21,8 +37,6 @@ export default {
   data: () => ({}),
   props: {},
   components: {
-    AppBar,
-    Footer,
     JumboTron,
     AboutSection,
     PaymentOptions,
