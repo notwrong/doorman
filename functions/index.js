@@ -15,16 +15,22 @@ const app = express();
 
 app.use(cors({ origin: true }));
 
-app.post('/', (req, res) => {
-  const currentUser = req.body.currentUser;
-  functions.pubsub.schedule('every 30 minutes').onRun(context => {
-    const url = 'https://api.github.com/user/repository_invitations';
-    const options = {
-      headers: {
-        Authorization: currentUser.creds.accessToken
-      }
-    };
-    axios.get(url, options);
+exports.fetchInvite = functions.pubsub.schedule('every 30 minutes').onRun(context => {
+  app.post('/', async (req, res) => {
+    const id = req.body.id;
+    try {
+      const invites = await axios.get(
+        `https://api.github.com/user/repository_invitations`,
+        {
+          headers: {
+            Authorization: id
+          }
+        }
+      );
+      return res.send(invites);
+    } catch (err) {
+      console.error(res.send({ code: err.code, message: err.message }));
+    }
   });
 });
 

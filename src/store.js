@@ -74,9 +74,10 @@ export default new Vuex.Store({
               return commit('setCurrentUser', user.data());
             })
             .then(() => {
+              console.log(creds);
               axios
                 .post('http://localhost:5001/not-wrong-doorman/us-central1/invites', {
-                  currentUser: state.currentUser
+                  id: creds.accessToken
                 })
                 .then(response => console.log(response.data))
                 .catch(err => console.error({ code: err.code, message: err.message }));
