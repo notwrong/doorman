@@ -14,7 +14,7 @@ const app = express();
 
 app.use(cors({ origin: true }));
 
-app.get('/auth', async (req, res) => {
+app.get('/api/auth', async (req, res) => {
   if (!req.headers.authorization) {
     return res
       .status(401)
