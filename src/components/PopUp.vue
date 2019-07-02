@@ -3,17 +3,20 @@
     <slot slot="activator"></slot>
     <v-card>
       <v-card-title>
-        <h2>Edit {{selectedUser.login}}</h2>
+        <h2>
+          Edit
+          <span class="primary--text">{{selectedUser.login}}</span>
+        </h2>
       </v-card-title>
       <v-card-text>
-        {{selectedUser.login}} is currently
+        This Github user is currently
         <span
           v-if="!blocked"
         >whitelisted and any requests from them will be automatically accepted.</span>
-        <span v-if="blocked">blacklisted and any requests from them will be automatically refused.</span>
-        Change this permission?
+        <span v-else>blacklisted and any requests from them will be automatically refused.</span>
+        Change this rule?
       </v-card-text>
-      <v-card-actions>
+      <v-card-actions class="pa-3 text-xs-center justify-center">
         <v-spacer></v-spacer>
         <v-btn
           v-if="!blocked"
@@ -22,7 +25,7 @@
           @click="addBlocked(selectedUser), dialog=false"
         >Yes, block this user</v-btn>
         <v-btn
-          v-if="blocked"
+          v-else
           flat
           class="success"
           @click="addAllowed(selectedUser), dialog=false"

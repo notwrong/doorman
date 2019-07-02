@@ -1,27 +1,32 @@
 <template>
-  <div class="users">
+  <v-app class="users-list" dark>
     <h1 class="primary--text text-xs-center mt-5">Github Users</h1>
 
     <v-container v-if="blockedAndAllowed.length>0" class="my-5">
-      <v-card class="pa-3 my-3" v-for="(user, i) in blockedAndAllowed" :key="i">
+      <v-card class="pa-3 my-3 secondary" v-for="(user, i) in blockedAndAllowed" :key="i">
         <v-layout row justify-space-between>
-          <v-flex xs6>
-            <div class="pt-1">Username: {{user.login}} is blocked? {{isBlocked(user)}}</div>
+          <v-flex xs3>
+            <v-card class="py-1 text-xs-center primary--text" width="200">
+              <v-avatar color="secondary">
+                <img :src="user.avatar_url" />
+              </v-avatar>
+              {{user.login}}
+            </v-card>
           </v-flex>
           <v-flex xs6 class="mr-2 text-xs-right">
             <v-icon large v-if="isAllowed(user)" right class="success--text">check</v-icon>
-            <v-icon large v-if="isBlocked(user)" right class="error--text">block</v-icon>
+            <v-icon large v-else right class="error--text">block</v-icon>
             <PopUp :selected-user="user" :blocked="isBlocked(user)">
-              <v-btn class="primary">Edit</v-btn>
+              <v-btn class="primary secondary--text">Edit</v-btn>
             </PopUp>
           </v-flex>
         </v-layout>
       </v-card>
     </v-container>
-    <v-container v-if="!blockedAndAllowed.length">
+    <v-container v-else>
       <h3>Sorry, looks like you haven't blocked or whitelisted anybody yet!</h3>
     </v-container>
-  </div>
+  </v-app>
 </template>
 
 <script>
@@ -48,5 +53,9 @@ export default {
 <style scoped>
 .username {
   text-align: center;
+}
+.success--text,
+.error--text {
+  height: 15px;
 }
 </style>
