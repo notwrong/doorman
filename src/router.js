@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import { auth } from './utils/firebaseConfig';
 
 Vue.use(Router)
+
 
 export default new Router({
   mode: 'history',
@@ -23,3 +25,13 @@ export default new Router({
     }
   ]
 })
+
+function requireAuth(to, from, next) {
+  if (auth.currentUser) {
+    next()
+  }
+  next({
+    name: 'home',
+    replace: true
+  })
+}
