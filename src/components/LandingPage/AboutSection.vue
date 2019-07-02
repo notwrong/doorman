@@ -14,13 +14,11 @@
             <span
               class="font-weight-bold primary--text text--lighten-1"
             >EVERY. SINGLE. DAY.</span>
-            We think that you should be able to save all of the time you spend every day accepting invites
-            to get some awesome code written!
+            We think that you should be able to save all of the time you spend every day accepting invites to get some awesome code written!
           </p>
         </div>
         <p class="subheading">
-          Simply connect to your Github and whitelist users that you'd like us to automatically accept invitations from
-          on your behalf, or choose which users to block. It's as simply as a couple of clicks!
+          Simply log in with your GitHub account and specify which users you'd like us to automatically accept or decline invitations from on your behalf. It's as simply as a couple of clicks!
         </p>
         <v-btn style="margin-left: 0;" flat class="secondary outlined">Sign Up</v-btn>
       </v-flex>
