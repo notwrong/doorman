@@ -50,7 +50,6 @@ export default new Vuex.Store({
                 commit("setCurrentUser", newUser);
               });
           } else {
-<<<<<<< HEAD
             const userRef = db
               .collection("users")
               .doc(`${creds.additionalUserInfo.profile.id}`);
@@ -69,13 +68,6 @@ export default new Vuex.Store({
                   .then(user => {
                     commit("setCurrentUser", user.data());
                   });
-=======
-            db.collection("users")
-              .doc(`${creds.additionalUserInfo.profile.id}`)
-              .get()
-              .then(user => {
-                commit("setCurrentUser", user.data());
->>>>>>> master
               });
           }
         })
