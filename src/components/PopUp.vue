@@ -37,7 +37,7 @@
 import { mapActions, mapState } from "vuex";
 
 export default {
-  props: ["selectedUser", "blocked"],
+  props: { selectedUser: Object, blocked: Boolean },
   data() {
     return {
       dialog: false
