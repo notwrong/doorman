@@ -41,7 +41,14 @@
                   depressed
                   color="grey"
                 >Sign Up</v-btn>
-                <v-btn v-else disabled class="primary" height="100" depressed color="grey">Sign Up</v-btn>
+                <v-btn
+                  v-else
+                  disabled
+                  class="primary"
+                  height="100"
+                  depressed
+                  color="grey"
+                >Coming Soon</v-btn>
               </v-card-actions>
             </div>
           </div>
@@ -67,7 +74,7 @@ export default {
         planName: "START-UP",
         img:
           "https://www.aislelabs.com/wp-content/themes/aislelabs3/images/team.png",
-        description: "< 10 users",
+        description: "Groups Under 10",
         cost: "$1.50",
         available: false
       },
@@ -75,7 +82,7 @@ export default {
         planName: "ENTERPRISE",
         img:
           "https://www.geekdentalmarketing.com/wp-content/uploads/2018/09/team.png",
-        description: "> 10 users",
+        description: "Groups Over 10",
         cost: "$1",
         available: false
       }
