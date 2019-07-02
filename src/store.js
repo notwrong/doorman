@@ -1,7 +1,9 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { db, auth } from "./utils/firebaseConfig";
 import firebase from "firebase";
+import { vuexfireMutations, firestoreAction } from 'vuexfire';
+import { db, auth } from "./utils/firebaseConfig";
+import router from './router';
 
 Vue.use(Vuex);
 
@@ -12,60 +14,67 @@ export default new Vuex.Store({
   mutations: {
     setCurrentUser(state, user) {
       state.currentUser = user;
-    }
+    },
+    ...vuexfireMutations
   },
   actions: {
-    githubLogin({ commit }) {
+    bindCurrentUser: firestoreAction(({ state, bindFirestoreRef }) => {
+      return bindFirestoreRef(
+        'currentUser', 
+        db.collection('users').doc(state.currentUser.id)
+      )
+    }),
+    async githubLogin({ commit }) {
       const provider = new firebase.auth.GithubAuthProvider();
       provider.addScope("repo:invite");
       provider.setCustomParameters({
         allow_signup: "false"
       });
 
-      auth
-        .signInWithPopup(provider)
-        .then(creds => {
-          if (creds.additionalUserInfo.isNewUser) {
-            const newUser = {
-              ...creds.additionalUserInfo.profile,
+      const creds = await auth.signInWithPopup(provider)
+
+      try {
+        if (creds.additionalUserInfo.isNewUser) {
+          const newUser = {
+            ...creds.additionalUserInfo.profile,
+            creds: {
+              ...creds.credential,
+              refreshToken: creds.user.refreshToken
+            },
+            id: `${creds.additionalUserInfo.profile.id}`,
+            user_id: creds.user.uid,
+            block: {},
+            allow: {}
+          };
+          
+          await db.collection("users").doc(`${newUser.id}`).set(newUser)
+          
+          commit("setCurrentUser", newUser);
+          router.push('/dashboard')
+        }
+        
+        else {
+          const userRef = db.collection("users")
+            .doc(`${creds.additionalUserInfo.profile.id}`);
+
+          await userRef.update({
               creds: {
                 ...creds.credential,
                 refreshToken: creds.user.refreshToken
-              },
-              id: `${creds.additionalUserInfo.profile.id}`,
-              user_id: creds.user.uid,
-              block: {},
-              allow: {}
-            };
-            db.collection("users")
-              .doc(`${newUser.id}`)
-              .set(newUser)
-              .then(() => {
-                commit("setCurrentUser", newUser);
-              });
-          } else {
-            const userRef = db
-              .collection("users")
-              .doc(`${creds.additionalUserInfo.profile.id}`);
+              }
+            })
+          
+          const authedUser = await db.collection("users")
+                                    .doc(`${userRef.id}`).get()
+          
+          commit("setCurrentUser", authedUser.data());
+          router.push('/dashboard')
+        }
+      }
 
-            userRef
-              .update({
-                creds: {
-                  ...creds.credential,
-                  refreshToken: creds.user.refreshToken
-                }
-              })
-              .then(() => {
-                db.collection("users")
-                  .doc(`${userRef.id}`)
-                  .get()
-                  .then(user => {
-                    commit("setCurrentUser", user.data());
-                  });
-              });
-          }
-        })
-        .catch(err => console.error({ message: err.message, code: err.code }));
+      catch (err) {
+        console.error(err)
+      }
     },
     addBlocked({ commit, state }, user) {
       let updatedUser = state.currentUser;
@@ -121,7 +130,9 @@ export default new Vuex.Store({
       return u && Object.values(u.allow).concat(Object.values(u.block));
     },
     firstName(state) {
-      return state.currentUser.name.split(" ")[0];
+      if (state.currentUser) {
+        return state.currentUser.name.split(" ")[0];
+      }
     }
   }
 });
