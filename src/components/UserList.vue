@@ -35,14 +35,6 @@ import PopUp from "./PopUp.vue";
 
 export default {
   components: { PopUp },
-  created() {
-    this.login();
-  },
-  methods: {
-    ...mapActions({
-      login: "githubLogin"
-    })
-  },
   computed: {
     ...mapState(["currentUser"]),
     ...mapGetters(["blockedAndAllowed", "isAllowed", "isBlocked"])
