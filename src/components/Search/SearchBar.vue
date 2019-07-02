@@ -39,7 +39,7 @@ export default {
   methods: {
     async getUserNames(v) {
       try {
-        const url = `${process.env.VUE_APP_GH_API}/search/users?q=${v}`;
+        const url = `https://api.github.com/search/users?q=${v}`;
         const token = this.$store.state.currentUser.creds.accessToken;
 
         const users = await axios({
