@@ -7,7 +7,7 @@
         <v-layout row justify-space-between>
           <v-flex xs3>
             <v-card class="py-1 text-xs-center primary--text" width="200">
-              <v-avatar color="secondary">
+              <v-avatar class="mr-2">
                 <img :src="user.avatar_url" />
               </v-avatar>
               {{user.login}}

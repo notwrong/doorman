@@ -16,8 +16,8 @@
         <span v-else>blacklisted and any requests from them will be automatically refused.</span>
         Change this rule?
       </v-card-text>
-      <v-card-actions class="pa-3 text-xs-center justify-center">
-        <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
+      <v-card-actions class="pa-3 justify-center">
         <v-btn
           v-if="!blocked"
           flat
@@ -30,6 +30,11 @@
           class="success"
           @click="addAllowed(selectedUser), dialog=false"
         >Yes, whitelist this user</v-btn>
+        <v-btn
+          flat
+          class="primary"
+          @click="deleteUser(selectedUser), dialog=false"
+        >Delete all rules for user</v-btn>
         <v-btn flat class="error" @click="dialog=false">Cancel</v-btn>
       </v-card-actions>
     </v-card>
@@ -47,7 +52,11 @@ export default {
     };
   },
   methods: {
-    ...mapActions({ addBlocked: "addBlocked", addAllowed: "addAllowed" })
+    ...mapActions({
+      addBlocked: "addBlocked",
+      addAllowed: "addAllowed",
+      deleteUser: "deleteUserRule"
+    })
   },
   computed: {
     ...mapState(["currentUser"])

@@ -12,12 +12,6 @@ export default new Vuex.Store({
   mutations: {
     setCurrentUser(state, user) {
       state.currentUser = user;
-    },
-    updateBlocked(state, user) {
-      state.currentUser = user;
-    },
-    updateAllowed(state, user) {
-      state.currentUser = user;
     }
   },
   actions: {
@@ -73,7 +67,7 @@ export default new Vuex.Store({
         .doc(`${state.currentUser.id}`)
         .update(updatedUser)
         .then(() => {
-          commit("updateBlocked", updatedUser);
+          commit("setCurrentUser", updatedUser);
         })
         .catch(err => console.error({ message: err.message, code: err.code }));
     },
@@ -88,7 +82,23 @@ export default new Vuex.Store({
         .doc(`${state.currentUser.id}`)
         .update(updatedUser)
         .then(() => {
-          commit("updateAllowed", updatedUser);
+          commit("setCurrentUser", updatedUser);
+        })
+        .catch(err => console.error({ message: err.message, code: err.code }));
+    },
+    deleteUserRule({ commit, state }, user) {
+      let updatedUser = state.currentUser;
+
+      if (updatedUser.block && updatedUser.block[user.id])
+        delete updatedUser.block[user.id];
+      if (updatedUser.allow && updatedUser.allow[user.id])
+        delete updatedUser.allow[user.id];
+
+      db.collection("users")
+        .doc(`${state.currentUser.id}`)
+        .update(updatedUser)
+        .then(() => {
+          commit("setCurrentUser", updatedUser);
         })
         .catch(err => console.error({ message: err.message, code: err.code }));
     }
