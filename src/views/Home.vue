@@ -1,11 +1,31 @@
 <template>
   <v-app id="inspire" dark>
-    <AppBar/>
-    <JumboTron/>
-    <AboutSection/>
-    <PaymentOptions/>
-    <FinalCallToAction/>
-    <Footer/>
+    <AppBar />
+    <JumboTron
+      data-aos="fade-right"
+      data-aos-easing="ease-in-out"
+      data-aos-delay="180"
+      data-aos-duration="1500"
+    />
+    <AboutSection
+      data-aos="fade-left"
+      data-aos-easing="ease-in-out"
+      data-aos-delay="180"
+      data-aos-duration="1200"
+    />
+    <PaymentOptions
+      data-aos="slide-right"
+      data-aos-easing="ease-in-out"
+      data-aos-delay="200"
+      data-aos-duration="1500"
+    />
+    <FinalCallToAction
+      data-aos="fade-up"
+      data-aos-easing="ease-in-out"
+      data-aos-delay="180"
+      data-aos-duration="1200"
+    />
+    <Footer />
   </v-app>
 </template>
 
