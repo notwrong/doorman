@@ -10,49 +10,54 @@
         on projects. So we decided to get together and build an app that can automate that problem away.
       </h3>
       <!-- the layout for the grid of the team members -->
-      <v-layout row wrap justify-space-around>
-        <!-- this wraps the team member card -->
-        <v-flex
-          justify-center
-          xs8
-          md3
-          height="400px"
-          class="my-4 secondary"
-          v-for="member in teamMembers"
-          :key="member.name"
-          id="myWrapper"
-        >
-          <!-- the individual team member card -->
-          <v-card id="myCard" flat class="text-xs-center my-2 pa-2">
-            <!-- making the avatar responsive, the avatar itself, and it's img source -->
-            <v-responsive class="pt-4">
-              <v-avatar size="130">
-                <img :src="member.img" alt="avatar of member">
-              </v-avatar>
-            </v-responsive>
-            <!-- team member name -->
-            <v-card-text id="name">{{member.name}}</v-card-text>
-            <!-- team member position -->
-            <v-card-text class="font-weight-light">{{ member.position }}</v-card-text>
-            <!-- Links to team members porfolio, github, and linkedIn accounts -->
-            <v-card-actions>
-              <!-- github -->
+      <div ref="test" class="test">
+        <v-layout row wrap justify-space-around>
+          <!-- this wraps the team member card -->
+          <v-flex
+            justify-center
+            xs8
+            md3
+            height="400px"
+            class="my-4 secondary"
+            v-for="member in teamMembers"
+            :key="member.name"
+            id="myWrapper"
+          >
+            <!-- the individual team member card -->
+            <v-card ref="TeamMemberCard" id="myCard" flat class="text-xs-center my-2 pa-2">
+              <!-- making the avatar responsive, the avatar itself, and it's img source -->
+              <v-responsive class="pt-4">
+                <div ref="pic">
+                  <v-avatar size="140">
+                    <img :src="member.img" alt="avatar of member" />
+                  </v-avatar>
+                </div>
+              </v-responsive>
+              <!-- team member name -->
+              <v-card-text id="name">{{member.name}}</v-card-text>
+              <h1 ref="egg" id="egg">SURPRISE</h1>
+              <!-- team member position -->
+              <v-card-text class="font-weight-light">{{ member.position }}</v-card-text>
+              <!-- Links to team members porfolio, github, and linkedIn accounts -->
+              <v-card-actions>
+                <!-- github -->
 
-              <v-btn flat>
-                <a :href="member.github" target="_blank">Github</a>
-              </v-btn>
-              <!-- linkedIn -->
-              <v-btn flat>
-                <a :href="member.linkedIn" target="_blank">LinkedIn</a>
-              </v-btn>
-              <!-- portfolio -->
-              <v-btn flat>
-                <a :href="member.portfolio" target="_blank">Portfolio</a>
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-flex>
-      </v-layout>
+                <v-btn flat>
+                  <a :href="member.github" target="_blank">Github</a>
+                </v-btn>
+                <!-- linkedIn -->
+                <v-btn flat>
+                  <a :href="member.linkedIn" target="_blank">LinkedIn</a>
+                </v-btn>
+                <!-- portfolio -->
+                <v-btn flat>
+                  <a :href="member.portfolio" target="_blank">Portfolio</a>
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </div>
     </v-card>
   </v-container>
 </template>
@@ -65,7 +70,41 @@ import AJ from "../../assets/AJ.png";
 import Ryan from "../../assets/ryan.png";
 import Tom from "../../assets/Tom.png";
 
+import { TimelineLite, TweenMax, Back } from "gsap";
+
 export default {
+  mounted() {
+    const { test, pic } = this.$refs;
+    const timeline = new TimelineLite();
+
+    timeline.to(test, 1, {
+      x: 0,
+      y: 50,
+      ease: Back.ease
+    });
+    timeline.to(test, 1, {
+      x: 0,
+      y: 0,
+      opacity: 1,
+      ease: Back.ease
+    });
+    timeline.to(
+      pic,
+      1,
+      {
+        rotation: 360
+      },
+      15
+    );
+    timeline.to(egg, 1, {
+      opacity: 1,
+      ease: Back.ease
+    });
+    timeline.to(egg, 1, {
+      opacity: 0,
+      ease: Back.ease
+    });
+  },
   data() {
     return {
       teamMembers: [
@@ -124,7 +163,15 @@ export default {
 </script>
 
 <style scoped>
-#myCard {
+.test {
+  opacity: 0;
+}
+
+#egg {
+  font-size: 16px;
+  color: gold;
+  opacity: 0;
+  margin: -4%;
 }
 
 #myWrapper {

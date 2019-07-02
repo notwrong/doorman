@@ -1,7 +1,7 @@
 <template>
   <v-toolbar app flat fixed clipped-left>
     <v-toolbar-title ripple class="primary--text">
-      <v-btn flat :to="{name:'home'}">
+      <v-btn flat to="/">
         <!-- <span class="primary--text title">Doorman</span>
         <v-icon right large class="primary--text">code</v-icon>-->
         <!-- <img style="width: 130px;" src="../../assets/doorman-logo-alternate.svg" alt> -->
