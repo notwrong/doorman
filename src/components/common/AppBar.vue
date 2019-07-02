@@ -62,6 +62,7 @@
       </v-btn>
     </v-toolbar-title>
     <v-spacer></v-spacer>
+    <v-btn flat color="grey">About</v-btn>
     <v-btn flat color="grey">
       <span>Login</span>
       <v-icon right>account_circle</v-icon>
