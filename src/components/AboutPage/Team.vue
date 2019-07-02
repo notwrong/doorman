@@ -30,7 +30,7 @@ export default {
       teamMembers: [
         {
           name: "Gannon Darcy",
-          img: "Gannon",
+          img: Gannon,
           github: "https://github.com/GannonDetroit",
           linkedIn: "https://www.linkedin.com/in/gannon-darcy-b8345073/",
           portfolio: "https://www.gannon.dev/",
@@ -38,7 +38,7 @@ export default {
         },
         {
           name: "AJ Brush",
-          img: "AJ",
+          img: AJ,
           github: "https://github.com/ajb85",
           linkedIn: "https://www.linkedin.com/in/andrew-brush-58205b122/",
           portfolio: "https://ajbrush.com/",
@@ -46,15 +46,15 @@ export default {
         },
         {
           name: "Ryan Boris",
-          img: "Ryan",
+          img: Ryan,
           github: "https://github.com/ryanboris",
-          linkedIn: "",
-          portfolio: "",
+          linkedIn: "https://www.linkedin.com/in/ryanboris",
+          portfolio: "https://github.com/ryanboris",
           position: "Full Stack Developer"
         },
         {
           name: "Nick Cannariato",
-          img: "Nick",
+          img: Nick,
           github: "https://github.com/ajb85",
           linkedIn: "https://www.linkedin.com/in/nickcannariato/",
           portfolio: "https://github.com/nickcannariato",
@@ -62,7 +62,7 @@ export default {
         },
         {
           name: "Adam McKenney",
-          img: "Adam",
+          img: Adam,
           github: "https://github.com/DaftBeowulf",
           linkedIn: "https://www.linkedin.com/in/adam-mckenney-04827a35/",
           portfolio: "https://adammckenney.dev/",
@@ -70,7 +70,7 @@ export default {
         },
         {
           name: "Thomas Hessburg",
-          img: "Tom",
+          img: Tom,
           github: "https://github.com/TomHessburg",
           linkedIn: "https://www.linkedin.com/in/thomas-hessburg-596948180/",
           portfolio: "https://thomashessburg.com/",
