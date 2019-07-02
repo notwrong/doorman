@@ -62,12 +62,8 @@
       </v-btn>
     </v-toolbar-title>
     <v-spacer></v-spacer>
-<<<<<<< HEAD
-    <v-btn v-on:click="githubLogin()" flat color="grey">
-=======
     <v-btn flat color="grey">About</v-btn>
     <v-btn flat v-if="!currentUser" @click="githubLogin" color="grey">
->>>>>>> origin/feat/fetch-invite-data
       <span>Login</span>
       <v-icon right>account_circle</v-icon>
     </v-btn>
@@ -80,17 +76,17 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
+import { mapState, mapActions, mapGetters } from 'vuex';
 export default {
   methods: {
-    ...mapActions(["githubLogin"]),
+    ...mapActions(['githubLogin']),
     logUser() {
       console.log(this.currentUser);
     }
   },
   computed: {
-    ...mapState(["currentUser"]),
-    ...mapGetters(["firstName"])
+    ...mapState(['currentUser']),
+    ...mapGetters(['firstName'])
   }
 };
 </script>
