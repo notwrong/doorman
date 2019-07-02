@@ -13,6 +13,11 @@
           class="my-2 pa-2 secondary"
           v-for="plan in paymentOptions"
           :key="plan.planName"
+          data-aos="flip-up"
+          data-aos-easing="ease-in-out"
+          data-aos-delay="300"
+          data-aos-duration="600"
+          style="transform-style: preserve-3d;"
         >
           <div class="card">
             <div class="upperCard">
@@ -41,7 +46,14 @@
                   depressed
                   color="grey"
                 >Sign Up</v-btn>
-                <v-btn v-else disabled class="primary" height="100" depressed color="grey">Sign Up</v-btn>
+                <v-btn
+                  v-else
+                  disabled
+                  class="primary"
+                  height="100"
+                  depressed
+                  color="grey"
+                >Coming Soon</v-btn>
               </v-card-actions>
             </div>
           </div>
@@ -67,7 +79,7 @@ export default {
         planName: "START-UP",
         img:
           "https://www.aislelabs.com/wp-content/themes/aislelabs3/images/team.png",
-        description: "< 10 users",
+        description: "Groups < 10",
         cost: "$1.50",
         available: false
       },
@@ -75,7 +87,7 @@ export default {
         planName: "ENTERPRISE",
         img:
           "https://www.geekdentalmarketing.com/wp-content/uploads/2018/09/team.png",
-        description: "> 10 users",
+        description: "Groups > 10",
         cost: "$1",
         available: false
       }
