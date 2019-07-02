@@ -62,7 +62,8 @@
       </v-btn>
     </v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-btn flat v-if="!currentUser" @click="githubLogin" color="primary">
+    <v-btn flat color="grey">About</v-btn>
+    <v-btn flat v-if="!currentUser" @click="githubLogin" color="grey">
       <span>Login</span>
       <v-icon right>account_circle</v-icon>
     </v-btn>

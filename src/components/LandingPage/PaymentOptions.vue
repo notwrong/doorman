@@ -7,24 +7,18 @@
         <!-- this v-flex wraps the payment card -->
         <v-flex
           justify-center
-          xs10
+          xs8
           md3
           height="400px"
           class="my-2 pa-2 secondary"
           v-for="plan in paymentOptions"
           :key="plan.planName"
         >
-          <div
-            class="card"
-            data-aos="slide-right"
-            data-aos-easing="ease-in-out"
-            data-aos-delay="100"
-            data-aos-duration="1500"
-          >
+          <div class="card">
             <div class="upperCard">
               <!-- the title of the card -->
               <v-card-text>
-                <div class="title">PLAN : {{ plan.planName}}</div>
+                <div class="title font-weight-regular">{{ plan.planName}}</div>
               </v-card-text>
               <!-- the image of the card -->
               <v-img :aspect-ratio="16/7" :src="plan.img"></v-img>
@@ -33,11 +27,21 @@
             <div class="lowerCard">
               <v-card-text class="text-xs-center">
                 <!-- the description of the card -->
-                <div class="subheading">{{ plan.description}}</div>
+                <div class="subheading">
+                  {{ plan.description}}
+                  <v-icon class="primary--text">check</v-icon>
+                </div>
               </v-card-text>
               <!-- the button of the card -->
               <v-card-actions>
-                <v-btn class="primary" height="100" depressed color="grey">Sign Up</v-btn>
+                <v-btn
+                  v-if="plan.available"
+                  class="primary"
+                  height="100"
+                  depressed
+                  color="grey"
+                >Sign Up</v-btn>
+                <v-btn v-else disabled class="primary" height="100" depressed color="grey">Sign Up</v-btn>
               </v-card-actions>
             </div>
           </div>
@@ -55,22 +59,25 @@ export default {
         planName: "BASIC",
         img:
           "https://longfordpc.com/images/growth-clipart-height-measurement-3.png",
-        description: "Free Tier Plan",
-        cost: "$0"
+        description: "Single User",
+        cost: "$0",
+        available: true
       },
       {
         planName: "START-UP",
         img:
           "https://www.aislelabs.com/wp-content/themes/aislelabs3/images/team.png",
-        description: "Plan for teams under 10",
-        cost: "$1.50"
+        description: "< 10 users",
+        cost: "$1.50",
+        available: false
       },
       {
         planName: "ENTERPRISE",
         img:
           "https://www.geekdentalmarketing.com/wp-content/uploads/2018/09/team.png",
-        description: "Plan for teams above 10",
-        cost: "$1"
+        description: "> 10 users",
+        cost: "$1",
+        available: false
       }
     ]
   }),
