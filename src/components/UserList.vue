@@ -6,7 +6,12 @@
       <v-card class="pa-3 my-3 secondary" v-for="(user, i) in blockedAndAllowed" :key="i">
         <v-layout row justify-space-between>
           <v-flex xs3>
-            <v-card class="py-1 text-xs-left primary--text" width="200">
+            <v-card
+              :href="user.html_url"
+              target="_blank"
+              class="py-1 text-xs-left username primary--text"
+              width="200"
+            >
               <v-avatar class="mr-4 ml-2">
                 <img :src="user.avatar_url" />
               </v-avatar>
@@ -44,7 +49,8 @@ export default {
 
 <style scoped>
 .username {
-  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
 }
 .success--text,
 .error--text {
