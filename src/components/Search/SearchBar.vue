@@ -50,7 +50,7 @@ export default {
           }
         });
 
-        console.log("DATA", users.data);
+        this.items.push(...users.data.items);
       } catch (error) {
         console.log("AXIOS ERROR:", error);
       }

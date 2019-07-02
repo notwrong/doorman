@@ -62,30 +62,30 @@
       </v-btn>
     </v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-btn flat v-if="!this.$store.state.currentUser" @click="login" color="primary">
+    <v-btn flat v-if="!currentUser" @click="githubLogin" color="primary">
       <span>Login</span>
       <v-icon right>account_circle</v-icon>
     </v-btn>
     <v-btn flat v-else @click="logUser" color="primary">
-      <span>Welcome, {{ getFirstName() }}</span>
-      <img class="avatar" :src="this.$store.state.currentUser.avatar_url" alt="User avatar" />
+      <span>Welcome, {{ firstName }}</span>
+      <img class="avatar" :src="currentUser.avatar_url" alt="User avatar" />
       <img />
     </v-btn>
   </v-toolbar>
 </template>
 
 <script>
+import { mapState, mapActions, mapGetters } from "vuex";
 export default {
   methods: {
-    login() {
-      this.$store.dispatch("githubLogin");
-    },
+    ...mapActions(["githubLogin"]),
     logUser() {
-      console.log(this.$store.state.currentUser);
-    },
-    getFirstName() {
-      return this.$store.state.currentUser.name.split(" ")[0];
+      console.log(this.currentUser);
     }
+  },
+  computed: {
+    ...mapState(["currentUser"]),
+    ...mapGetters(["firstName"])
   }
 };
 </script>

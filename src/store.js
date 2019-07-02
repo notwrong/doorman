@@ -105,5 +105,10 @@ export default new Vuex.Store({
         })
         .catch(err => console.error({ message: err.message, code: err.code }));
     }
+  },
+  getters: {
+    firstName(state) {
+      return state.currentUser.name.split(" ")[0];
+    }
   }
 });
