@@ -12,8 +12,6 @@ import Team from "../components/AboutPage/Team";
 import Contact from "../components/AboutPage/Contact";
 
 export default {
-  data() {},
-
   components: {
     Team,
     Contact
