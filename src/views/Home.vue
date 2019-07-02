@@ -1,6 +1,5 @@
 <template>
-  <v-app id="inspire" dark>
-    <AppBar />
+  <div>
     <JumboTron
       data-aos="fade-right"
       data-aos-easing="ease-in-out"
@@ -25,13 +24,10 @@
       data-aos-delay="180"
       data-aos-duration="1200"
     />
-    <Footer />
-  </v-app>
+  </div>
 </template>
 
 <script>
-import AppBar from "../components/LandingPage/AppBar";
-import Footer from "../components/LandingPage/Footer";
 import JumboTron from "../components/LandingPage/JumboTron";
 import AboutSection from "../components/LandingPage/AboutSection";
 import PaymentOptions from "../components/LandingPage/PaymentOptions";
@@ -41,8 +37,6 @@ export default {
   data: () => ({}),
   props: {},
   components: {
-    AppBar,
-    Footer,
     JumboTron,
     AboutSection,
     PaymentOptions,
