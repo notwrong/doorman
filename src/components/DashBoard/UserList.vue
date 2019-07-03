@@ -1,6 +1,6 @@
 <template>
   <v-app class="users-list" dark>
-    <v-container v-if="blockedAndAllowed.length>0" class="my-5">
+    <v-container class="my-5">
       <v-card class="pa-3 my-3 secondary" v-for="(user, i) in blockedAndAllowed" :key="i">
         <v-layout row justify-space-between>
           <v-flex xs3>
@@ -30,9 +30,6 @@
           </v-flex>
         </v-layout>
       </v-card>
-    </v-container>
-    <v-container v-else>
-      <h3>Sorry, looks like you haven't blocked or whitelisted anybody yet!</h3>
     </v-container>
   </v-app>
 </template>
