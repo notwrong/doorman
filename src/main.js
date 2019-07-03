@@ -17,6 +17,7 @@ library.add(faUserTimes, faUserCheck);
 library.add(faUserSecret);
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
+Vue.config.devtools = true;
 Vue.config.productionTip = false;
 
 let app = null;
