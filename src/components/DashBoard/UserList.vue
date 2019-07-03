@@ -52,7 +52,11 @@ export default {
   },
   computed: {
     ...mapState(["currentUser"]),
-    ...mapGetters(["blockedAndAllowed"])
+    blockedAndAllowed() {
+      return Object.values(this.currentUser.allow)
+        .concat(Object.values(this.currentUser.block))
+        .sort((a, b) => a.id - b.id);
+    }
   }
 };
 </script>
