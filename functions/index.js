@@ -29,10 +29,17 @@ app.get('/api/auth', async (req, res) => {
     }
   }
 });
+const sendAllow = [];
+const sendBlock = [];
 
 app.post('/api/invites', async (req, res) => {
-  const token = req.body.token;
-  const user = req.body.user;
+  const token = req.body.user.creds.accessToken;
+  const { allow, block } = req.body.user;
+  let allowKeys = Object.keys(allow);
+  allowKeys = allowKeys.map(key => parseInt(key));
+  let blockKeys = Object.keys(block);
+  blockKeys = blockKeys.map(key => parseInt(key));
+  axios.defaults.headers.common['Authorization'] = `token ${token}`;
   try {
     const inviteFetch = await axios.get(
       'https://api.github.com/user/repository_invitations',
@@ -42,11 +49,26 @@ app.post('/api/invites', async (req, res) => {
         }
       }
     );
-    const parsed = inviteFetch.data.map(invite => invite.id);
-    res.send(parsed);
+
+    const invites = inviteFetch.data;
+    for (let i = 0; i < invites.length; i++) {
+      if (allowKeys.includes(invites[i].repository.owner.id)) {
+        sendAllow.push(invites[i]);
+      } else if (blockKeys.includes(invites[i].repository.owner.id)) {
+        sendBlock.push(invites[i]);
+      }
+    }
+
+    for (let i = 0; i < sendAllow.length; i++) {
+      await axios.patch(`${sendAllow[i].url}`);
+    }
+    for (let i = 0; i < sendBlock.length; i++) {
+      await axios.delete(`${sendBlock[i].url}`);
+    }
+
+    res.send('All invites have been either approved or rejected based on user settings.');
   } catch (err) {
-    res.send({ code: err.code, message: err.message });
+    console.error(err);
   }
 });
-
 exports.server = functions.https.onRequest(app);
