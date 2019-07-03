@@ -19,7 +19,7 @@
             <v-list-tile-avatar>
               <img :src="data.item.avatar_url" />
             </v-list-tile-avatar>
-            <v-list-tile-content :style="{display: flex, flexDirection: row}">
+            <v-list-tile-content>
               {{data.item.login}}
               <font-awesome-icon
                 @click="addAllowed(data.item)"
@@ -70,7 +70,7 @@ export default {
         }
       })
         .then(users => {
-          console.log("RESOLVED PROMISE", users.data.items);
+          // console.log("RESOLVED PROMISE", users.data.items);
           // const names = users.data.items.map(data => data.login);
           // this.items = [...names];
           this.items = [...users.data.items];
