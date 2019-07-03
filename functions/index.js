@@ -49,7 +49,7 @@ app.post('/api/invites', async (req, res) => {
         }
       }
     );
-
+    console.log(token);
     const invites = inviteFetch.data;
     for (let i = 0; i < invites.length; i++) {
       if (allowKeys.includes(invites[i].repository.owner.id)) {
@@ -59,11 +59,21 @@ app.post('/api/invites', async (req, res) => {
       }
     }
 
-    for (let i = 0; i < sendAllow.length; i++) {
-      await axios.patch(`${sendAllow[i].url}`);
+    if (sendAllow.length === 0 && sendBlock.length === 0) {
+      res.send({ message: 'No pending invites.' });
+      return null;
     }
-    for (let i = 0; i < sendBlock.length; i++) {
-      await axios.delete(`${sendBlock[i].url}`);
+
+    if (sendAllow.length > 0) {
+      for (let i = 0; i < sendAllow.length; i++) {
+        await axios.patch(`${sendAllow[i].url}`);
+      }
+    }
+
+    if (sendBlock.length > 0) {
+      for (let i = 0; i < sendBlock.length; i++) {
+        await axios.delete(`${sendBlock[i].url}`);
+      }
     }
 
     res.send('All invites have been either approved or rejected based on user settings.');
