@@ -3,8 +3,8 @@
     <v-container class="my-5">
       <v-btn-toggle v-if="returnFilter.length>0" v-model="filter">
         <v-btn flat value="all" class="primary secondary--text">All</v-btn>
-        <v-btn flat value="allow" class="primary secondary--text">Accept</v-btn>
-        <v-btn flat value="block" class="primary secondary--text">Decline</v-btn>
+        <v-btn flat value="allow" class="primary secondary--text">Accepted</v-btn>
+        <v-btn flat value="block" class="primary secondary--text">Declined</v-btn>
       </v-btn-toggle>
       <v-card class="pa-3 my-3 secondary userlist" v-for="(user, i) in returnFilter" :key="i">
         <v-layout row justify-space-between>
