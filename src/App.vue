@@ -1,5 +1,6 @@
 <template>
   <v-app id="inspire" dark>
+    <font-awesome-icon icon="user-secret" />
     <AppBar />
     <v-content>
       <router-view></router-view>
