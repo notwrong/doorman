@@ -132,7 +132,7 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    blockedAndAllowed: ({ currentUser: u }) => {
+    blockedAndAllowedList: ({ currentUser: u }) => {
       return (
         u &&
         Object.values(u.allow)
@@ -140,6 +140,13 @@ export default new Vuex.Store({
           .sort((a, b) => a.id - b.id)
       );
     },
+    blockedList: ({ currentUser: u }) => {
+      return u && Object.values(u.block).sort((a, b) => a.id - b.id);
+    },
+    allowedList: ({ currentUser: u }) => {
+      return u && Object.values(u.allow).sort((a, b) => a.id - b.id);
+    },
+
     isAllowed: ({ currentUser: u }) => user => {
       return u.allow.hasOwnProperty(user.id);
     },

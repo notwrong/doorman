@@ -1,7 +1,12 @@
 <template>
   <v-app class="users-list" dark>
     <v-container class="my-5">
-      <v-card class="pa-3 my-3 secondary" v-for="(user, i) in blockedAndAllowed" :key="i">
+      <v-btn-toggle v-if="returnFilter.length>0" v-model="filter">
+        <v-btn flat value="all" class="primary secondary--text">All</v-btn>
+        <v-btn flat value="allow" class="primary secondary--text">Accepted</v-btn>
+        <v-btn flat value="block" class="primary secondary--text">Declined</v-btn>
+      </v-btn-toggle>
+      <v-card class="pa-3 my-3 secondary userlist" v-for="(user, i) in returnFilter" :key="i">
         <v-layout row justify-space-between>
           <v-flex xs3>
             <v-card
@@ -40,9 +45,24 @@ import PopUp from "./PopUp.vue";
 
 export default {
   components: { PopUp },
+  data() {
+    return {
+      filter: "all"
+    };
+  },
   computed: {
     ...mapState(["currentUser"]),
-    ...mapGetters(["blockedAndAllowed"])
+    ...mapGetters(["blockedAndAllowedList", "blockedList", "allowedList"]),
+    returnFilter() {
+      switch (this.filter) {
+        case "all":
+          return this.blockedAndAllowedList;
+        case "block":
+          return this.blockedList;
+        case "allow":
+          return this.allowedList;
+      }
+    }
   }
 };
 </script>
