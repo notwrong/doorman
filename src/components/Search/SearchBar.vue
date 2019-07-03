@@ -1,16 +1,19 @@
 <template>
   <v-toolbar dark color="secondary">
-    <v-toolbar-title>Add Users</v-toolbar-title>
+    <v-toolbar-title :style="{ margin: '0 15px 0 0' }">Add Users</v-toolbar-title>
     <v-autocomplete
+      :style="{ width: '50%' }"
       :loading="loading"
       :items="items"
       :search-input.sync="search"
-      box
-      chips
       color="blue-grey lighten-2"
       label="Username"
       item-text="login"
       item-value="login"
+      solo-inverted
+      flat
+      hide-no-data
+      hide-details
     >
       <template v-slot:selection="data">{{ data.item.name }}</template>
       <template v-slot:item="data">
@@ -19,23 +22,26 @@
             <v-list-tile-avatar>
               <img :src="data.item.avatar_url" />
             </v-list-tile-avatar>
-            <v-list-tile-content>
+            <v-list-tile-content
+              :style="{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start' }"
+            >
               {{data.item.login}}
               <font-awesome-icon
                 @click="addAllowed(data.item)"
                 :icon="['fas', 'user-check']"
-                :style="currentUser.allow && currentUser.allow[data.item.id] ? { color: 'white', margin: '0 5px 0 10px' } : { color: 'grey', margin: '0 5px 0 10px' }"
+                :class="currentUser.allow && currentUser.allow[data.item.id] ? 'buttonIcon allow active':'buttonIcon allow'"
               />
               <font-awesome-icon
                 @click="addBlocked(data.item)"
                 :icon="['fas', 'user-times']"
-                :style="currentUser.block && currentUser.block[data.item.id] ? { color: 'white', margin: '0 5px' } : { color: 'grey', margin: '0 5px' }"
+                :class="currentUser.block && currentUser.block[data.item.id] ? 'buttonIcon block active':'buttonIcon block'"
               />
             </v-list-tile-content>
           </v-list-tile>
         </template>
       </template>
     </v-autocomplete>
+    <div class="divider" />
   </v-toolbar>
 </template>
 
@@ -86,3 +92,26 @@ export default {
   }
 };
 </script>
+
+<style>
+.buttonIcon {
+  cursor: pointer;
+  color: grey;
+}
+.allow {
+  margin: 0 5px 0 20px;
+}
+.block {
+  margin: 0 5px;
+}
+.allow.active {
+  color: #3cd1c2;
+}
+.block.active {
+  color: #f83e70;
+}
+.divider {
+  width: 20%;
+  height: 1px;
+}
+</style>
