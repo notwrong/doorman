@@ -1,9 +1,9 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import firebase from 'firebase';
-import { vuexfireMutations, firestoreAction } from 'vuexfire';
-import { db, auth } from './utils/firebaseConfig';
-import router from './router';
+import Vue from "vue";
+import Vuex from "vuex";
+import firebase from "firebase";
+import { vuexfireMutations, firestoreAction } from "vuexfire";
+import { db, auth } from "./utils/firebaseConfig";
+import router from "./router";
 
 Vue.use(Vuex);
 
@@ -20,15 +20,15 @@ export default new Vuex.Store({
   actions: {
     bindCurrentUser: firestoreAction(({ state, bindFirestoreRef }) => {
       return bindFirestoreRef(
-        'currentUser',
-        db.collection('users').doc(state.currentUser.id)
+        "currentUser",
+        db.collection("users").doc(state.currentUser.id)
       );
     }),
     async githubLogin({ commit }) {
       const provider = new firebase.auth.GithubAuthProvider();
-      provider.addScope('repo:invite');
+      provider.addScope("repo:invite");
       provider.setCustomParameters({
-        allow_signup: 'false'
+        allow_signup: "false"
       });
 
       const creds = await auth.signInWithPopup(provider);
@@ -48,17 +48,16 @@ export default new Vuex.Store({
           };
 
           await db
-            .collection('users')
+            .collection("users")
             .doc(`${newUser.id}`)
             .set(newUser);
           commit("setCurrentUser", newUser);
           const idToken = await auth.currentUser.getIdToken(true);
-          localStorage.setItem('idToken', idToken)
+          localStorage.setItem("idToken", idToken);
           router.push("/dashboard");
-
         } else {
           const userRef = db
-            .collection('users')
+            .collection("users")
             .doc(`${creds.additionalUserInfo.profile.id}`);
 
           await userRef.update({
@@ -69,15 +68,14 @@ export default new Vuex.Store({
           });
 
           const authedUser = await db
-            .collection('users')
+            .collection("users")
             .doc(`${userRef.id}`)
             .get();
-          
+
           commit("setCurrentUser", authedUser.data());
           const idToken = await auth.currentUser.getIdToken(true);
-          localStorage.setItem('idToken', idToken)
+          localStorage.setItem("idToken", idToken);
           router.push("/dashboard");
-
         }
       } catch (err) {
         console.error(err);
@@ -85,6 +83,7 @@ export default new Vuex.Store({
     },
     addBlocked({ commit, state }, user) {
       let updatedUser = state.currentUser;
+      if (!updatedUser.block) updatedUser.block = {};
 
       // first conditional prevents error from devs if they'd signed in before the block/allow objects were added to the default state object
       // will be removed for production
@@ -92,11 +91,11 @@ export default new Vuex.Store({
         delete updatedUser.allow[user.id];
       updatedUser.block[user.id] = user;
 
-      db.collection('users')
+      db.collection("users")
         .doc(`${state.currentUser.id}`)
         .update(updatedUser)
         .then(() => {
-          commit('setCurrentUser', updatedUser);
+          commit("setCurrentUser", updatedUser);
         })
         .catch(err => console.error({ message: err.message, code: err.code }));
     },
@@ -107,11 +106,11 @@ export default new Vuex.Store({
         delete updatedUser.block[user.id];
       updatedUser.allow[user.id] = user;
 
-      db.collection('users')
+      db.collection("users")
         .doc(`${state.currentUser.id}`)
         .update(updatedUser)
         .then(() => {
-          commit('setCurrentUser', updatedUser);
+          commit("setCurrentUser", updatedUser);
         })
         .catch(err => console.error({ message: err.message, code: err.code }));
     },
@@ -123,11 +122,11 @@ export default new Vuex.Store({
       if (updatedUser.allow && updatedUser.allow[user.id])
         delete updatedUser.allow[user.id];
 
-      db.collection('users')
+      db.collection("users")
         .doc(`${state.currentUser.id}`)
         .update(updatedUser)
         .then(() => {
-          commit('setCurrentUser', updatedUser);
+          commit("setCurrentUser", updatedUser);
         })
         .catch(err => console.error({ message: err.message, code: err.code }));
     }
@@ -149,7 +148,7 @@ export default new Vuex.Store({
     },
     firstName(state) {
       if (state.currentUser) {
-        return state.currentUser.name.split(' ')[0];
+        return state.currentUser.name.split(" ")[0];
       }
     }
   }
