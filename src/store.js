@@ -4,6 +4,7 @@ import firebase from 'firebase';
 import { vuexfireMutations, firestoreAction } from 'vuexfire';
 import { db, auth } from './utils/firebaseConfig';
 import router from './router';
+import axios from 'axios';
 
 Vue.use(Vuex);
 
@@ -54,7 +55,7 @@ export default new Vuex.Store({
           commit('setCurrentUser', newUser);
           await axios.post(
             'http://localhost:5001/not-wrong-doorman/us-central1/server/api/invites',
-            { token: newUser.creds.accessToken }
+            { token: newUser.creds.accessToken, user: newUser }
           );
           const idToken = await auth.currentUser.getIdToken(true);
           localStorage.setItem('idToken', idToken);
@@ -79,7 +80,7 @@ export default new Vuex.Store({
           commit('setCurrentUser', authedUser.data());
           await axios.post(
             'http://localhost:5001/not-wrong-doorman/us-central1/server/api/invites',
-            { token: authedUser.data().creds.accessToken }
+            { token: authedUser.data().creds.accessToken, user: authedUser.data() }
           );
           const idToken = await auth.currentUser.getIdToken(true);
           localStorage.setItem('idToken', idToken);
