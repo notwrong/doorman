@@ -47,7 +47,6 @@ function requireAuth(to, from, next) {
       }
     )
     .then(res => {
-      console.log(res);
       if (res.status === 200) {
         next();
         return;
