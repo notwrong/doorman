@@ -1,11 +1,11 @@
 <template>
   <v-toolbar app flat fixed clipped-left>
     <v-toolbar-title ripple class="primary--text">
-      <v-btn flat :to="{name:'home'}">
+      <v-btn flat :to="dashboardOrHome">
         <!-- <span class="primary--text title">Doorman</span>
         <v-icon right large class="primary--text">code</v-icon>-->
         <!-- <img style="width: 130px;" src="../../assets/doorman-logo-alternate.svg" alt> -->
-        <DoormanLogo/>
+        <DoormanLogo />
         <!-- i know theres a way to do the fill for these in CSS but it was giving me crap so I didnt waste time haha -->
       </v-btn>
     </v-toolbar-title>
@@ -17,8 +17,8 @@
     </v-btn>
     <v-btn flat v-else @click="logUser" color="primary">
       <span>Welcome, {{ firstName }}</span>
-      <img class="avatar" :src="currentUser.avatar_url" alt="User avatar">
-      <img>
+      <img class="avatar" :src="currentUser.avatar_url" alt="User avatar" />
+      <img />
     </v-btn>
   </v-toolbar>
 </template>
@@ -39,8 +39,11 @@ export default {
     }
   },
   computed: {
-    ...mapState(['currentUser']),
-    ...mapGetters(['firstName'])
+    ...mapState(["currentUser"]),
+    ...mapGetters(["firstName"]),
+    dashboardOrHome() {
+      return this.currentUser ? "/dashboard" : "/";
+    }
   }
 };
 </script>

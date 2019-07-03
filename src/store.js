@@ -51,9 +51,11 @@ export default new Vuex.Store({
             .collection('users')
             .doc(`${newUser.id}`)
             .set(newUser);
+          commit("setCurrentUser", newUser);
+          const idToken = await auth.currentUser.getIdToken(true);
+          localStorage.setItem('idToken', idToken)
+          router.push("/dashboard");
 
-          commit('setCurrentUser', newUser);
-          router.push('/dashboard');
         } else {
           const userRef = db
             .collection('users')
@@ -70,9 +72,12 @@ export default new Vuex.Store({
             .collection('users')
             .doc(`${userRef.id}`)
             .get();
+          
+          commit("setCurrentUser", authedUser.data());
+          const idToken = await auth.currentUser.getIdToken(true);
+          localStorage.setItem('idToken', idToken)
+          router.push("/dashboard");
 
-          commit('setCurrentUser', authedUser.data());
-          router.push('/dashboard');
         }
       } catch (err) {
         console.error(err);
@@ -129,7 +134,12 @@ export default new Vuex.Store({
   },
   getters: {
     blockedAndAllowed: ({ currentUser: u }) => {
-      return u && Object.values(u.allow).concat(Object.values(u.block));
+      return (
+        u &&
+        Object.values(u.allow)
+          .concat(Object.values(u.block))
+          .sort((a, b) => a.id - b.id)
+      );
     },
     isAllowed: ({ currentUser: u }) => user => {
       return u.allow.hasOwnProperty(user.id);
