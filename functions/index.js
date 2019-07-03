@@ -9,6 +9,7 @@ admin.initializeApp({
 const functions = require('firebase-functions');
 const express = require('express');
 const cors = require('cors');
+const axios = require('axios');
 
 const app = express();
 
@@ -26,6 +27,23 @@ app.get('/api/auth', async (req, res) => {
     } catch (err) {
       return res.status(500).json({ code: err.code, message: err.message });
     }
+  }
+});
+
+app.post('/api/invites', async (req, res) => {
+  const token = req.body.token;
+  try {
+    const inviteFetch = await axios.get(
+      'https://api.github.com/user/repository_invitations',
+      {
+        headers: {
+          Authorization: `token ${token}`
+        }
+      }
+    );
+    res.send(inviteFetch.data);
+  } catch (err) {
+    res.send({ code: err.code, message: err.message });
   }
 });
 
