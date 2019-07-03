@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
-import axios from 'axios';
+import axios from "axios";
 import Home from "./views/Home.vue";
 import About from "./views/About.vue";
 import Dashboard from "./views/Dashboard.vue";
@@ -31,21 +31,26 @@ export default new Router({
 });
 
 function requireAuth(to, from, next) {
-  const idToken = localStorage.getItem('idToken')
-
-  axios.get(
-    'https://us-central1-not-wrong-doorman.cloudfunctions.net/server/api/auth',{
-      headers: {
-        authorization: idToken
+  const idToken = localStorage.getItem("idToken");
+  if (!idToken) next({ name: "home", replace: true });
+  axios
+    .get(
+      "https://us-central1-not-wrong-doorman.cloudfunctions.net/server/api/auth",
+      {
+        headers: {
+          authorization: idToken
+        }
       }
-    }).then(res => {
+    )
+    .then(res => {
+      console.log(res);
       if (res.status === 200) {
-        next()
-        return 
-      } 
+        next();
+        return;
+      }
       next({
         name: "home",
         replace: true
-      })
-    })
+      });
+    });
 }
