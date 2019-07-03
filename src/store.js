@@ -54,7 +54,7 @@ export default new Vuex.Store({
             .set(newUser);
           commit('setCurrentUser', newUser);
           await axios.post(
-            'http://localhost:5001/not-wrong-doorman/us-central1/server/api/invites',
+            'https://us-central1-not-wrong-doorman.cloudfunctions.net/server/api/invites',
             {
               user: newUser
             }
@@ -81,7 +81,7 @@ export default new Vuex.Store({
 
           commit('setCurrentUser', authedUser.data());
           await axios.post(
-            'http://localhost:5001/not-wrong-doorman/us-central1/server/api/invites',
+            'https://us-central1-not-wrong-doorman.cloudfunctions.net/server/api/invites',
             {
               user: authedUser.data()
             }
