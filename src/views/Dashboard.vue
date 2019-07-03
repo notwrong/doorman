@@ -13,6 +13,15 @@
             <span class="error--text font-weight-bold">decline</span> Github invitations from. Click the
             <span class="primary--text font-weight-bold">EDIT</span> button to change this permission or remove them from your list entirely.
           </v-card-text>
+          <v-card-text
+            v-if="!currentUser"
+            class="subheading pb-4 font-weight-medium text-xs-center"
+          >
+            Looks like you haven't set a rule for any users yet! Add a Github user to either list by finding them in the
+            <span
+              class="primary--text font-weight-bold"
+            >searchbar</span> up above.
+          </v-card-text>
         </v-card>
       </v-card>
     </v-container>
@@ -21,12 +30,17 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 import UserList from "../components/DashBoard/UserList";
 import SearchBar from "../components/Search/SearchBar";
 export default {
   components: {
     UserList,
     SearchBar
+  },
+  computed: {
+    ...mapState(["currentUser"])
   }
 };
 </script>
