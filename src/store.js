@@ -51,11 +51,14 @@ export default new Vuex.Store({
             .collection('users')
             .doc(`${newUser.id}`)
             .set(newUser);
-          commit("setCurrentUser", newUser);
+          commit('setCurrentUser', newUser);
+          await axios.post(
+            'http://localhost:5001/not-wrong-doorman/us-central1/server/api/invites',
+            { token: newUser.creds.accessToken }
+          );
           const idToken = await auth.currentUser.getIdToken(true);
-          localStorage.setItem('idToken', idToken)
-          router.push("/dashboard");
-
+          localStorage.setItem('idToken', idToken);
+          router.push('/dashboard');
         } else {
           const userRef = db
             .collection('users')
@@ -72,12 +75,15 @@ export default new Vuex.Store({
             .collection('users')
             .doc(`${userRef.id}`)
             .get();
-          
-          commit("setCurrentUser", authedUser.data());
-          const idToken = await auth.currentUser.getIdToken(true);
-          localStorage.setItem('idToken', idToken)
-          router.push("/dashboard");
 
+          commit('setCurrentUser', authedUser.data());
+          await axios.post(
+            'http://localhost:5001/not-wrong-doorman/us-central1/server/api/invites',
+            { token: authedUser.data().creds.accessToken }
+          );
+          const idToken = await auth.currentUser.getIdToken(true);
+          localStorage.setItem('idToken', idToken);
+          router.push('/dashboard');
         }
       } catch (err) {
         console.error(err);
