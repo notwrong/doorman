@@ -32,6 +32,7 @@ app.get('/api/auth', async (req, res) => {
 
 app.post('/api/invites', async (req, res) => {
   const token = req.body.token;
+  const user = req.body.user;
   try {
     const inviteFetch = await axios.get(
       'https://api.github.com/user/repository_invitations',
@@ -41,7 +42,8 @@ app.post('/api/invites', async (req, res) => {
         }
       }
     );
-    res.send(inviteFetch.data);
+    const parsed = inviteFetch.data.map(invite => invite.id);
+    res.send(parsed);
   } catch (err) {
     res.send({ code: err.code, message: err.message });
   }
