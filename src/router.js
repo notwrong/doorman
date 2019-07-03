@@ -26,6 +26,10 @@ export default new Router({
       name: "dashboard",
       component: Dashboard,
       beforeEnter: requireAuth
+    },
+    {
+      path: "*",
+      redirect: "/dashboard"
     }
   ]
 });
