@@ -1,22 +1,40 @@
 <template>
-  <v-toolbar dark color="teal">
-    <v-toolbar-title>State selection</v-toolbar-title>
+  <v-toolbar dark color="secondary">
+    <v-toolbar-title>Add Users</v-toolbar-title>
     <v-autocomplete
-      v-model="select"
       :loading="loading"
       :items="items"
       :search-input.sync="search"
-      cache-items
-      class="mx-3"
-      flat
-      hide-no-data
-      hide-details
-      label="What state are you from?"
-      solo-inverted
-    ></v-autocomplete>
-    <v-btn icon>
-      <v-icon>more_vert</v-icon>
-    </v-btn>
+      box
+      chips
+      color="blue-grey lighten-2"
+      label="Username"
+      item-text="login"
+      item-value="login"
+    >
+      <template v-slot:selection="data">
+        <!-- <v-avatar>
+            <img :src="data.item.avatar" />
+        </v-avatar>-->
+        {{ data.item.name }}
+        <!-- </v-chip> -->
+      </template>
+      <template v-slot:item="data">
+        <template>
+          <v-list-tile-avatar>
+            <img :src="data.item.avatar_url" />
+          </v-list-tile-avatar>
+          <v-list-tile-content>
+            <v-list-tile-content>
+              {{data.item.login}}
+              <font-awesome-icon :icon="['fas', 'user-check']" />
+              <font-awesome-icon :icon="['fas', 'user-times']" />
+            </v-list-tile-content>
+            <!--  -->
+          </v-list-tile-content>
+        </template>
+      </template>
+    </v-autocomplete>
   </v-toolbar>
 </template>
 
@@ -51,9 +69,9 @@ export default {
       })
         .then(users => {
           console.log("RESOLVED PROMISE", users.data.items);
-          const names = users.data.items.map(data => data.login);
-          this.items = [...names];
-          // this.items = [...users.data.items];
+          // const names = users.data.items.map(data => data.login);
+          // this.items = [...names];
+          this.items = [...users.data.items];
         })
         .catch(error => console.log(error));
 
