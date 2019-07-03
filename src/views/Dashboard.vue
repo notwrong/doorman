@@ -1,5 +1,6 @@
 <template>
   <div>
+    <SearchBar />
     <v-container>
       <v-card class="pa-3">
         <v-card>
@@ -21,9 +22,11 @@
 
 <script>
 import UserList from "../components/DashBoard/UserList";
+import SearchBar from "../components/Search/SearchBar";
 export default {
   components: {
-    UserList
+    UserList,
+    SearchBar
   }
 };
 </script>
