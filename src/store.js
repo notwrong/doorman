@@ -115,7 +115,7 @@ export default new Vuex.Store({
         .catch(err => console.error({ message: err.message, code: err.code }));
     },
     deleteUserRule({ commit, state }, user) {
-      let updatedUser = state.currentUser;
+      let updatedUser = { ...state.currentUser };
 
       if (updatedUser.block && updatedUser.block[user.id])
         delete updatedUser.block[user.id];
