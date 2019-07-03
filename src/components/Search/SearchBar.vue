@@ -12,26 +12,27 @@
       item-text="login"
       item-value="login"
     >
-      <template v-slot:selection="data">
-        <!-- <v-avatar>
-            <img :src="data.item.avatar" />
-        </v-avatar>-->
-        {{ data.item.name }}
-        <!-- </v-chip> -->
-      </template>
+      <template v-slot:selection="data">{{ data.item.name }}</template>
       <template v-slot:item="data">
         <template>
-          <v-list-tile-avatar>
-            <img :src="data.item.avatar_url" />
-          </v-list-tile-avatar>
-          <v-list-tile-content>
-            <v-list-tile-content>
+          <v-list-tile inactive>
+            <v-list-tile-avatar>
+              <img :src="data.item.avatar_url" />
+            </v-list-tile-avatar>
+            <v-list-tile-content :style="{display: flex, flexDirection: row}">
               {{data.item.login}}
-              <font-awesome-icon :icon="['fas', 'user-check']" />
-              <font-awesome-icon :icon="['fas', 'user-times']" />
+              <font-awesome-icon
+                @click="addAllowed(data.item)"
+                :icon="['fas', 'user-check']"
+                :style="currentUser.allow && currentUser.allow[data.item.id] ? { color: 'white', margin: '0 5px 0 10px' } : { color: 'grey', margin: '0 5px 0 10px' }"
+              />
+              <font-awesome-icon
+                @click="addBlocked(data.item)"
+                :icon="['fas', 'user-times']"
+                :style="currentUser.block && currentUser.block[data.item.id] ? { color: 'white', margin: '0 5px' } : { color: 'grey', margin: '0 5px' }"
+              />
             </v-list-tile-content>
-            <!--  -->
-          </v-list-tile-content>
+          </v-list-tile>
         </template>
       </template>
     </v-autocomplete>
@@ -40,6 +41,7 @@
 
 <script>
 import axios from "axios";
+import { mapState, mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -76,7 +78,11 @@ export default {
         .catch(error => console.log(error));
 
       this.loading = false;
-    }
+    },
+    ...mapActions(["addBlocked", "addAllowed"])
+  },
+  computed: {
+    ...mapState(["currentUser"])
   }
 };
 </script>
