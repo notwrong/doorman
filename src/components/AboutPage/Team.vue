@@ -78,31 +78,41 @@ export default {
     const timeline = new TimelineLite();
 
     timeline.to(test, 1, {
-      x: 0,
-      y: 50,
-      ease: Back.ease
+      css: {
+        x: 0,
+        y: 50,
+        ease: Back.ease
+      }
     });
     timeline.to(test, 1, {
-      x: 0,
-      y: 0,
-      opacity: 1,
-      ease: Back.ease
+      css: {
+        x: 0,
+        y: 0,
+        opacity: 1,
+        ease: Back.ease
+      }
     });
     timeline.to(
       pic,
       1,
       {
-        rotation: 360
+        css: {
+          rotation: 360
+        }
       },
       15
     );
     timeline.to(egg, 1, {
-      opacity: 1,
-      ease: Back.ease
+      css: {
+        opacity: 1,
+        ease: Back.ease
+      }
     });
     timeline.to(egg, 1, {
-      opacity: 0,
-      ease: Back.ease
+      css: {
+        opacity: 0,
+        ease: Back.ease
+      }
     });
   },
   data() {
