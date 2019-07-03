@@ -24,14 +24,16 @@
 </template>
 
 <script>
+
 import { mapState, mapActions, mapGetters } from "vuex";
 import DoormanLogo from "./DoormanLogo.vue";
+
 export default {
   components: {
     DoormanLogo
   },
   methods: {
-    ...mapActions(["githubLogin"]),
+    ...mapActions(['githubLogin']),
     logUser() {
       console.log(this.currentUser);
     }
