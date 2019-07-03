@@ -1,7 +1,7 @@
 <template>
   <v-app class="users-list" dark>
     <v-container class="my-5">
-      <v-btn-toggle v-if="returnFilter.length>0" v-model="filter">
+      <v-btn-toggle v-if="currentUser && returnFilter.length>0" v-model="filter">
         <v-btn flat value="all" class="primary secondary--text">All</v-btn>
         <v-btn flat value="allow" class="primary secondary--text">Accepted</v-btn>
         <v-btn flat value="block" class="primary secondary--text">Declined</v-btn>
@@ -61,6 +61,8 @@ export default {
           return this.blockedList;
         case "allow":
           return this.allowedList;
+        default:
+          return [];
       }
     }
   }
