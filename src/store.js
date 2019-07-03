@@ -132,6 +132,21 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    blockedAndAllowedList: ({ currentUser: u }) => {
+      return (
+        u &&
+        Object.values(u.allow)
+          .concat(Object.values(u.block))
+          .sort((a, b) => a.id - b.id)
+      );
+    },
+    blockedList: ({ currentUser: u }) => {
+      return u && Object.values(u.block).sort((a, b) => a.id - b.id);
+    },
+    allowedList: ({ currentUser: u }) => {
+      return u && Object.values(u.allow).sort((a, b) => a.id - b.id);
+    },
+
     isAllowed: ({ currentUser: u }) => user => {
       return u.allow.hasOwnProperty(user.id);
     },

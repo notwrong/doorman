@@ -2,11 +2,11 @@
   <v-app class="users-list" dark>
     <v-container class="my-5">
       <v-btn-toggle v-model="filter">
-        <v-btn flat value="all" class="primary--text">All</v-btn>
-        <v-btn flat value="allow" class="primary--text">Accepted</v-btn>
-        <v-btn flat value="block" class="primary--text">Declined</v-btn>
+        <v-btn flat value="all" class="primary secondary--text">All</v-btn>
+        <v-btn flat value="allow" class="primary secondary--text">Accept</v-btn>
+        <v-btn flat value="block" class="primary secondary--text">Decline</v-btn>
       </v-btn-toggle>
-      <v-card class="pa-3 my-3 secondary userlist" v-for="(user, i) in blockedAndAllowed" :key="i">
+      <v-card class="pa-3 my-3 secondary userlist" v-for="(user, i) in returnFilter" :key="i">
         <v-layout row justify-space-between>
           <v-flex xs3>
             <v-card
@@ -52,10 +52,16 @@ export default {
   },
   computed: {
     ...mapState(["currentUser"]),
-    blockedAndAllowed() {
-      return Object.values(this.currentUser.allow)
-        .concat(Object.values(this.currentUser.block))
-        .sort((a, b) => a.id - b.id);
+    ...mapGetters(["blockedAndAllowedList", "blockedList", "allowedList"]),
+    returnFilter() {
+      switch (this.filter) {
+        case "all":
+          return this.blockedAndAllowedList;
+        case "block":
+          return this.blockedList;
+        case "allow":
+          return this.allowedList;
+      }
     }
   }
 };
