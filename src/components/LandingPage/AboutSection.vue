@@ -17,14 +17,14 @@
             We think that you should be able to save all of the time you spend every day accepting invites to get some awesome code written!
           </p>
         </div>
-        <p class="subheading">
-          Simply log in with your GitHub account and specify which users you'd like us to automatically accept or decline invitations from on your behalf. It's as simply as a couple of clicks!
-        </p>
+        <p
+          class="subheading"
+        >Simply log in with your GitHub account and specify which users you'd like us to automatically accept or decline invitations from on your behalf. It's as simple as a couple of clicks!</p>
         <v-btn style="margin-left: 0;" flat class="secondary outlined">Sign Up</v-btn>
       </v-flex>
 
       <v-flex xs12 md6 class="imgwrapper">
-        <img class="undrawimg" src="../../assets/undraw_reminder_pa79 (1).svg" alt>
+        <img class="undrawimg" src="../../assets/undraw_reminder_pa79 (1).svg" alt />
       </v-flex>
     </v-layout>
   </v-container>

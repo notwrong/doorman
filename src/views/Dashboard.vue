@@ -14,7 +14,7 @@
             <span class="primary--text font-weight-bold">EDIT</span> button to change this permission or remove them from your list entirely.
           </v-card-text>
           <v-card-text
-            v-if="!currentUser"
+            v-if="!blockedAndAllowedList.length"
             class="subheading pb-4 font-weight-medium text-xs-center"
           >
             Looks like you haven't set a rule for any users yet! Add a Github user to either list by finding them in the
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 import UserList from "../components/DashBoard/UserList";
 import SearchBar from "../components/Search/SearchBar";
@@ -40,7 +40,8 @@ export default {
     SearchBar
   },
   computed: {
-    ...mapState(["currentUser"])
+    ...mapState(["currentUser"]),
+    ...mapGetters(["blockedAndAllowedList"])
   }
 };
 </script>
