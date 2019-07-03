@@ -1,7 +1,7 @@
 <template>
   <v-toolbar app flat fixed clipped-left>
     <v-toolbar-title ripple class="primary--text">
-      <v-btn flat to="/">
+      <v-btn flat :to="dashboardOrHome">
         <!-- <span class="primary--text title">Doorman</span>
         <v-icon right large class="primary--text">code</v-icon>-->
         <!-- <img style="width: 130px;" src="../../assets/doorman-logo-alternate.svg" alt> -->
@@ -10,7 +10,6 @@
       </v-btn>
     </v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-btn flat color="grey" :to="{name: 'dashboard'}">Dashboard</v-btn>
     <v-btn flat color="grey" :to="{name:'about'}">About Us</v-btn>
     <v-btn flat v-if="!currentUser" @click="githubLogin" color="grey">
       <span>Login</span>
@@ -39,7 +38,10 @@ export default {
   },
   computed: {
     ...mapState(["currentUser"]),
-    ...mapGetters(["firstName"])
+    ...mapGetters(["firstName"]),
+    dashboardOrHome() {
+      return this.currentUser ? "/dashboard" : "/";
+    }
   }
 };
 </script>

@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import UserList from "../components/UserList";
+import UserList from "../components/DashBoard/UserList";
 export default {
   components: {
     UserList
