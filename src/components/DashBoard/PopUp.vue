@@ -9,12 +9,10 @@
         </h2>
       </v-card-title>
       <v-card-text class="title">
-        This Github user is currently
-        <span
-          v-if="!blocked"
-        >whitelisted and any requests from them will be automatically accepted.</span>
-        <span v-else>blacklisted and any requests from them will be automatically refused.</span>
-        Change this rule?
+        Any requests from this Github user will currently be
+        <span v-if="!blocked">accepted</span>
+        <span v-else>refused</span>
+        automatically. Change this rule?
       </v-card-text>
       <v-spacer></v-spacer>
       <v-card-actions>
@@ -24,19 +22,19 @@
             flat
             class="success flex-btn px-4"
             @click="addBlocked(selectedUser), dialog=false"
-          >Yes, block this user</v-btn>
+          >Yes, block requests</v-btn>
           <v-btn
             v-else
             flat
             class="success flex-btn px-4"
             @click="addAllowed(selectedUser), dialog=false"
-          >Yes, whitelist this user</v-btn>
+          >Yes, accept requests</v-btn>
           <v-btn
             flat
             class="primary flex-btn px-4"
             width="100%"
             @click="deleteUser(selectedUser), dialog=false"
-          >Delete all rules for user</v-btn>
+          >Remove user from list</v-btn>
           <v-btn flat class="error flex-btn px-4" @click="dialog=false">Cancel</v-btn>
         </div>
       </v-card-actions>
@@ -71,7 +69,7 @@ export default {
 .button-group {
   display: flex;
   width: 100%;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 @media (max-width: 600px) {
   .button-group {
