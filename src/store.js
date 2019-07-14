@@ -1,12 +1,13 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import firebase from 'firebase';
-import { vuexfireMutations, firestoreAction } from 'vuexfire';
-import { db, auth } from './utils/firebaseConfig';
-import router from './router';
-import axios from 'axios';
+import Vue from 'vue'
+import Vuex from 'vuex'
+import firebase from 'firebase/app'
+import { vuexfireMutations, firestoreAction } from 'vuexfire'
+import { db, auth } from './utils/firebaseConfig'
+import router from './router'
+import axios from 'axios'
+import cron from 'node-cron'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
@@ -14,7 +15,7 @@ export default new Vuex.Store({
   },
   mutations: {
     setCurrentUser(state, user) {
-      state.currentUser = user;
+      state.currentUser = user
     },
     ...vuexfireMutations
   },
@@ -23,16 +24,16 @@ export default new Vuex.Store({
       return bindFirestoreRef(
         'currentUser',
         db.collection('users').doc(state.currentUser.id)
-      );
+      )
     }),
     async githubLogin({ commit }) {
-      const provider = new firebase.auth.GithubAuthProvider();
-      provider.addScope('repo:invite');
+      const provider = new firebase.auth.GithubAuthProvider()
+      provider.addScope('repo:invite')
       provider.setCustomParameters({
         allow_signup: 'false'
-      });
+      })
 
-      const creds = await auth.signInWithPopup(provider);
+      const creds = await auth.signInWithPopup(provider)
 
       try {
         if (creds.additionalUserInfo.isNewUser) {
@@ -46,102 +47,123 @@ export default new Vuex.Store({
             user_id: creds.user.uid,
             block: {},
             allow: {}
-          };
+          }
 
           await db
             .collection('users')
             .doc(`${newUser.id}`)
-            .set(newUser);
-          commit('setCurrentUser', newUser);
+            .set(newUser)
+          commit('setCurrentUser', newUser)
+
           await axios.post(
             'https://us-central1-not-wrong-doorman.cloudfunctions.net/server/api/invites',
             {
               user: newUser
             }
-          );
-          const idToken = await auth.currentUser.getIdToken(true);
-          localStorage.setItem('idToken', idToken);
-          router.push('/dashboard');
+          )
+
+          cron.schedule('*/15 * * * *', async () => {
+            await axios.post(
+              'https://us-central1-not-wrong-doorman.cloudfunctions.net/server/api/invites',
+              {
+                user: newUser
+              }
+            )
+          })
+          const idToken = await auth.currentUser.getIdToken(true)
+          localStorage.setItem('idToken', idToken)
+          router.push('/dashboard')
         } else {
           const userRef = db
             .collection('users')
-            .doc(`${creds.additionalUserInfo.profile.id}`);
+            .doc(`${creds.additionalUserInfo.profile.id}`)
 
           await userRef.update({
             creds: {
               ...creds.credential,
               refreshToken: creds.user.refreshToken
             }
-          });
+          })
 
           const authedUser = await db
             .collection('users')
             .doc(`${userRef.id}`)
-            .get();
+            .get()
 
-          commit('setCurrentUser', authedUser.data());
+          commit('setCurrentUser', authedUser.data())
+
           await axios.post(
             'https://us-central1-not-wrong-doorman.cloudfunctions.net/server/api/invites',
             {
               user: authedUser.data()
             }
-          );
-          const idToken = await auth.currentUser.getIdToken(true);
-          localStorage.setItem('idToken', idToken);
-          router.push('/dashboard');
+          )
+
+          cron.schedule('*/15 * * * *', async () => {
+            await axios.post(
+              'https://us-central1-not-wrong-doorman.cloudfunctions.net/server/api/invites',
+              {
+                user: authedUser.data()
+              }
+            )
+          })
+
+          const idToken = await auth.currentUser.getIdToken(true)
+          localStorage.setItem('idToken', idToken)
+          router.push('/dashboard')
         }
       } catch (err) {
-        console.error(err);
+        console.error(err)
       }
     },
     addBlocked({ commit, state }, user) {
-      let updatedUser = { ...state.currentUser };
-      if (!updatedUser.block) updatedUser.block = {};
+      let updatedUser = { ...state.currentUser }
+      if (!updatedUser.block) updatedUser.block = {}
 
       // first conditional prevents error from devs if they'd signed in before the block/allow objects were added to the default state object
       // will be removed for production
       if (updatedUser.allow && updatedUser.allow[user.id])
-        delete updatedUser.allow[user.id];
-      updatedUser.block[user.id] = user;
+        delete updatedUser.allow[user.id]
+      updatedUser.block[user.id] = user
 
       db.collection('users')
         .doc(`${state.currentUser.id}`)
         .update(updatedUser)
         .then(() => {
-          commit('setCurrentUser', updatedUser);
+          commit('setCurrentUser', updatedUser)
         })
-        .catch(err => console.error({ message: err.message, code: err.code }));
+        .catch(err => console.error({ message: err.message, code: err.code }))
     },
     addAllowed({ commit, state }, user) {
-      let updatedUser = { ...state.currentUser };
+      let updatedUser = { ...state.currentUser }
 
       if (updatedUser.block && updatedUser.block[user.id])
-        delete updatedUser.block[user.id];
-      updatedUser.allow[user.id] = user;
+        delete updatedUser.block[user.id]
+      updatedUser.allow[user.id] = user
 
       db.collection('users')
         .doc(`${state.currentUser.id}`)
         .update(updatedUser)
         .then(() => {
-          commit('setCurrentUser', updatedUser);
+          commit('setCurrentUser', updatedUser)
         })
-        .catch(err => console.error({ message: err.message, code: err.code }));
+        .catch(err => console.error({ message: err.message, code: err.code }))
     },
     deleteUserRule({ commit, state }, user) {
-      let updatedUser = { ...state.currentUser };
+      let updatedUser = { ...state.currentUser }
 
       if (updatedUser.block && updatedUser.block[user.id])
-        delete updatedUser.block[user.id];
+        delete updatedUser.block[user.id]
       if (updatedUser.allow && updatedUser.allow[user.id])
-        delete updatedUser.allow[user.id];
+        delete updatedUser.allow[user.id]
 
       db.collection('users')
         .doc(`${state.currentUser.id}`)
         .update(updatedUser)
         .then(() => {
-          commit('setCurrentUser', updatedUser);
+          commit('setCurrentUser', updatedUser)
         })
-        .catch(err => console.error({ message: err.message, code: err.code }));
+        .catch(err => console.error({ message: err.message, code: err.code }))
     }
   },
   getters: {
@@ -151,25 +173,25 @@ export default new Vuex.Store({
         Object.values(u.allow)
           .concat(Object.values(u.block))
           .sort((a, b) => a.id - b.id)
-      );
+      )
     },
     blockedList: ({ currentUser: u }) => {
-      return u && Object.values(u.block).sort((a, b) => a.id - b.id);
+      return u && Object.values(u.block).sort((a, b) => a.id - b.id)
     },
     allowedList: ({ currentUser: u }) => {
-      return u && Object.values(u.allow).sort((a, b) => a.id - b.id);
+      return u && Object.values(u.allow).sort((a, b) => a.id - b.id)
     },
 
     isAllowed: ({ currentUser: u }) => user => {
-      return u.allow.hasOwnProperty(user.id);
+      return u.allow.hasOwnProperty(user.id)
     },
     isBlocked: ({ currentUser: u }) => user => {
-      return u.block.hasOwnProperty(user.id);
+      return u.block.hasOwnProperty(user.id)
     },
     firstName(state) {
       if (state.currentUser) {
-        return state.currentUser.name.split(' ')[0];
+        return state.currentUser.name.split(' ')[0]
       }
     }
   }
-});
+})
