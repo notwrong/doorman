@@ -31,7 +31,7 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
-
+import authMixin from "../utils/authMixin";
 import UserList from "../components/DashBoard/UserList";
 import SearchBar from "../components/Search/SearchBar";
 export default {
@@ -42,7 +42,8 @@ export default {
   computed: {
     ...mapState(["currentUser"]),
     ...mapGetters(["blockedAndAllowedList"])
-  }
+  },
+  mixins: [authMixin]
 };
 </script>
 

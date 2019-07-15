@@ -47,6 +47,7 @@ function requireAuth(to, from, next) {
       }
     )
     .then(res => {
+      console.log(res.data.firebase.identities["github.com"][0]);
       if (res.status === 200) {
         next();
         return;
