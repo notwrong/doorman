@@ -63,7 +63,13 @@
       </div>
       <div class="jumbowrapperbottom">
         <v-btn large flat class="primary outlined" :to="{name:'about'}">About Us</v-btn>
-        <v-btn large flat outline class="grey grey--text text--lighten-2">Sign Up</v-btn>
+        <v-btn
+          @click="githubLogin"
+          large
+          flat
+          outline
+          class="grey grey--text text--lighten-2"
+        >Sign Up</v-btn>
       </div>
       <!-- <img class="github-fork" src="../../assets/githubfork.png" alt="github for"> -->
     </div>
@@ -73,10 +79,12 @@
 <script>
 // import octicons from "@primer/octicons";
 // console.log(octicons["git-pull-request"].path);
+import { mapActions } from "vuex";
 
 export default {
-  data: () => ({}),
-  props: {}
+  methods: {
+    ...mapActions(["githubLogin"])
+  }
 };
 </script>
 

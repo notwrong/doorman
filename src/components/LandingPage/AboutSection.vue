@@ -20,7 +20,7 @@
         <p
           class="subheading"
         >Simply log in with your GitHub account and specify which users you'd like us to automatically accept or decline invitations from on your behalf. It's as simple as a couple of clicks!</p>
-        <v-btn style="margin-left: 0;" flat class="secondary outlined">Sign Up</v-btn>
+        <v-btn @click="githubLogin" style="margin-left: 0;" flat class="secondary outlined">Sign Up</v-btn>
       </v-flex>
 
       <v-flex xs12 md6 class="imgwrapper">
@@ -31,9 +31,12 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
-  data: () => ({}),
-  props: {}
+  methods: {
+    ...mapActions(["githubLogin"])
+  }
 };
 </script>
 

@@ -45,6 +45,7 @@
                   height="100"
                   depressed
                   color="grey"
+                  @click="githubLogin"
                 >Sign Up</v-btn>
                 <v-btn
                   v-else
@@ -64,6 +65,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   data: () => ({
     paymentOptions: [
@@ -93,7 +96,9 @@ export default {
       }
     ]
   }),
-  props: {}
+  methods: {
+    ...mapActions(["githubLogin"])
+  }
 };
 </script>
 
