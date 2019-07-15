@@ -79,7 +79,11 @@ export default {
           // console.log("RESOLVED PROMISE", users.data.items);
           // const names = users.data.items.map(data => data.login);
           // this.items = [...names];
-          this.items = [...users.data.items];
+          this.items = [
+            ...users.data.items.filter(
+              i => i.id !== parseInt(this.currentUser.id)
+            )
+          ];
         })
         .catch(error => console.log(error));
 
