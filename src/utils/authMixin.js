@@ -6,41 +6,40 @@ import { db } from "./firebaseConfig";
 export default {
   created() {
     const idToken = localStorage.getItem("idToken");
-    if (!idToken) router.push("/");
-
-    console.log("in mixin", this.currentUser);
-    if (this.currentUser === null) {
-      console.log("no user");
-      axios
-        .get(
-          "https://us-central1-not-wrong-doorman.cloudfunctions.net/server/api/auth",
-          {
-            headers: {
-              authorization: idToken
+    if (!idToken) {
+      // user needs to log into app to get new token
+      router.push("/");
+    } else {
+      if (this.currentUser === null) {
+        // gets user id from cloud function and sets the user data on currentUser in store
+        axios
+          .get(
+            "https://us-central1-not-wrong-doorman.cloudfunctions.net/server/api/auth",
+            {
+              headers: {
+                authorization: idToken
+              }
             }
-          }
-        )
-        .then(async res => {
-          if (res.status === 200) {
-            const userId = res.data.firebase.identities["github.com"][0];
-            console.log("working in .then", userId);
+          )
+          .then(async res => {
+            if (res.status === 200) {
+              const [userId] = res.data.firebase.identities["github.com"];
 
-            const user = await db
-              .collection("users")
-              .doc(`${userId}`)
-              .get();
+              const user = await db
+                .collection("users")
+                .doc(`${userId}`)
+                .get();
 
-            console.log("user from collection: ", user.data());
-            console.log(this.$store);
-            this.setCurrentUser(user.data());
-          } else {
+              this.setCurrentUser(user.data());
+            } else {
+              router.push("/");
+            }
+          })
+          .catch(err => {
+            console.error(err);
             router.push("/");
-          }
-        })
-        .catch(err => {
-          console.log("error", err);
-          //   router.push("/");
-        });
+          });
+      }
     }
   },
   computed: {
